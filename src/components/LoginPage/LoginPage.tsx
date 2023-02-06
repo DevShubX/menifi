@@ -79,7 +79,7 @@ const LoginPage = () => {
                                 <p>
                                     Password
                                 </p>
-                                <input type="text" />
+                                <input type="password" />
                                 <button>
                                     Login
                                 </button>
