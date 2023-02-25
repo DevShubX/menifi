@@ -2,14 +2,26 @@ import React, { useEffect, useState } from 'react';
 import Hls, { HlsSkip } from "hls.js";
 import Plyr from 'plyr';
 import "plyr/dist/plyr.css";
+import styled, { useTheme } from 'styled-components';
+import { IconContext } from 'react-icons';
+import { HiOutlineSwitchHorizontal } from 'react-icons/hi';
 
 
-const AnimeVideoPlayer = ({ sourceLinks }: { sourceLinks: any }) => {
+const AnimeVideoPlayer = ({ sourceLinks ,internalPlayer,setInternalPlayer}: { sourceLinks: any ,internalPlayer:any,setInternalPlayer:any}) => {
+    // if (src.includes(".mp4")) {
+    //     src = sourceLinks.sources_bk[0].file;
+    // }
+
+    const [ChangeSource ,setChangeSource] = useState(false);
+
     console.log(sourceLinks)
-    let src = sourceLinks.sources[0].file;
-    if (src.includes(".mp4")) {
-        src = sourceLinks.sources_bk[0].file;
+    let src:any;
+    if(!ChangeSource){
+        src =sourceLinks.sources[0].file;
+    }else{
+        src =sourceLinks.sources_bk[0].file;
     }
+
 
     useEffect(() => {
         const video: any = document.getElementById("player");
@@ -79,6 +91,14 @@ const AnimeVideoPlayer = ({ sourceLinks }: { sourceLinks: any }) => {
                 });
 
                 let plyr: any;
+                const playPauseButton:any = document.querySelector('.plyr__control[data-plyr="play"]');
+                playPauseButton.addEventListener('click', () => {
+                if (player.paused) {
+                    player.play();
+                } else {
+                    player.pause();
+                }
+                });
                 player.on("ready", () => {
                     plyr = document.querySelector(".plyr_controls");
                 });
@@ -152,15 +172,109 @@ const AnimeVideoPlayer = ({ sourceLinks }: { sourceLinks: any }) => {
 
         }
 
-    }, [src]);
+    }, []);
 
 
 
     return (
-        <div>
+        <div style={{
+            marginBottom : '1rem',
+            fontFamily : '"Gilroy-Medium",sans-serif',
+        }}>
+            <Container>
+                <IconContext.Provider
+                value={{
+                    size: "1.5rem",
+                    color : 'white',
+                    style : {
+                        verticalAlign : "middle",
+                    }
+                }} 
+                >
+                    {internalPlayer && <p>Internal Player</p>}
+                    <div>
+                        <div className='tooltip'>
+                            <button onClick={()=>setInternalPlayer(!internalPlayer)}>
+                                <HiOutlineSwitchHorizontal/>
+                            </button>
+                            <span className="tooltiptext">server</span>
+                        </div>
+                        <div className="tooltip">
+                            <button onClick={()=>setChangeSource(!ChangeSource)}>
+                                <HiOutlineSwitchHorizontal/>
+                            </button>
+                            <span className="tooltiptext">source</span>
+                        </div>
+                    </div>
+                </IconContext.Provider>
+            </Container>
+
             <video id="player" playsInline crossOrigin="anonymous"></video>
         </div>
     )
 }
+
+const Container = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(16, 16, 16);
+    padding:0.5rem 1rem;
+    border-radius:0.5rem 0.5rem 0 0;
+    font-family: 'Gilroy-Medium',sans-serif;
+
+    div{
+        display: flex;
+    }
+    button{
+        outline : none;
+        border: none;
+        background: transparent;
+        margin-left: 1rem;
+        cursor:pointer;
+    }
+    .tooltip{
+        position : relative;
+        display: flex;
+        flex-direction: column;
+        margin-right: 0.5rem;
+        align-items: center;
+        justify-content: center;
+
+    }
+    .tooptip .tooltiptext{
+        visibility: hidden;
+        width: 120px;
+        background-color: rgba(0,0,0,0.8);
+        color: #000;
+        text-align: center;
+        border-radius:6px;
+        padding : 5px 5px ;
+        position: absolute;
+        z-index: 1;
+        bottom: 150%;
+        left: 50%;
+        margin-left: -60px;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+    .tooltip .tooltiptext::after{
+        content: "";
+        position: absolute;
+        top: 100%;
+        left : 50%;
+        margin-left: -5px;
+        border-width : 5px;
+        border-style : solid;
+        border-color: black transparent transparent transparent;
+    }
+    .tooltip:hover .tooltiptext{
+        visibility: visible;
+        opacity: 1;
+    }
+
+
+`
+
 
 export default AnimeVideoPlayer

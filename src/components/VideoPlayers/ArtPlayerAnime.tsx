@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components';
 
 const ArtPlayerAnime = ({sourcesLinks}:{sourcesLinks:any}) => {
-    let src = sourcesLinks.sources_bk[0].file;
+    let src = sourcesLinks.sources[0].file;
     const artRef = useRef<any>();
     useEffect(() => {
         const art = new Artplayer({

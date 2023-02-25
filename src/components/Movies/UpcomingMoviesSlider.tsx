@@ -163,6 +163,7 @@ const Heading = styled.div`
     a{
     color: #ebe9e9;
     text-decoration: none;
+    font-family: 'Gilroy-Medium',sans-serif;
     }
     h1{
         font-size: 2.3rem;

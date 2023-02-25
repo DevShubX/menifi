@@ -54,7 +54,7 @@ const ContinueWatchingTvShows = () => {
                 <div>
                     <Heading>
                         <h1>
-                            Continue Watching Tv Shows
+                            Continue Watching
                         </h1>
                     </Heading>
                     {loading && <HomeCardSkeleton/>}

@@ -1,6 +1,8 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { BiArrowToBottom } from 'react-icons/bi'
+import { IconContext } from 'react-icons'
+import { BiArrowToBottom, BiFullscreen } from 'react-icons/bi'
+import { HiOutlineSwitchHorizontal } from 'react-icons/hi'
 import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import EpisodeSectionWithImage from '../../components/Anime/EpisodeSectionWithImage'
@@ -16,6 +18,7 @@ const WatchAnimePage = () => {
   const [loading, setLoading] = useState(true);
   const { width, height } = useWindowDimension();
   const [animeDetails, setAnimeDetails] = useState<any>([]);
+  const [internalPlayer,setInternalPlayer] = useState(true);
   useEffect(() => {
     getAnimeSources();
   }, [episodeSlug]);
@@ -27,6 +30,7 @@ const WatchAnimePage = () => {
     setAnimeSources(result.data);
     setLoading(false);
   }
+  console.log(animeSources)
   useEffect(() => {
     getAnimeDetails();
   }, []);
@@ -65,7 +69,47 @@ const WatchAnimePage = () => {
                 </div>
                 <div>
                   <div>
-                    <ArtPlayerAnime sourcesLinks={animeSources[0].sources} />
+                    {/* <ArtPlayerAnime sourcesLinks={animeSources[0].sources} /> */}
+                    {
+                      internalPlayer && (
+                        <AnimeVideoPlayer sourceLinks={animeSources[0].sources} internalPlayer={internalPlayer} setInternalPlayer={setInternalPlayer}></AnimeVideoPlayer>
+                      )
+                    }
+                    {
+                      !internalPlayer && (
+                        <div>
+                          <ExternalPlayerContainer>
+                            <IconContext.Provider
+                            value={{
+                              size : '1.5rem',
+                              color : 'white',
+                              style : {
+                                verticalAlign :'middle'
+                              }
+                            }}
+                            >
+                              <p>External Player (Contain Ads)</p>
+                              <div>
+                                    <div className='tooltip'>
+                                      <button onClick={()=>setInternalPlayer(!internalPlayer)}>
+                                          <HiOutlineSwitchHorizontal/>
+                                      </button>
+                                      <span className="tooltiptext">server</span>
+                                    </div>
+                              </div>
+                            </IconContext.Provider>
+                          </ExternalPlayerContainer>
+                          <IFrameWrapper>
+                            <iframe
+                              id = "video"
+                              title={animeSources[0].titleName}
+                              src ={animeSources[0].vidstreaming}
+                              allowFullScreen
+                              >
+                            </iframe>
+                          </IFrameWrapper>
+                        </div> 
+                      )}
                   </div>
                 </div>
               </div>
@@ -103,6 +147,64 @@ const WatchAnimePage = () => {
   )
 }
 
+const ExternalPlayerContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(16,16,16);
+    padding : 0.5rem 1rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+    margin-top: 1rem;
+    border-bottom: none;
+    font-family: "Gilroy-Medium" , sans-serif;
+    button{
+        outline : none;
+        border: none;
+        background: transparent;
+        margin-left: 1rem;
+        cursor:pointer;
+    }
+    .tooltip{
+        position : relative;
+        display: flex;
+        flex-direction: column;
+        margin-right: 0.5rem;
+        align-items: center;
+        justify-content: center;
+
+    }
+`
+
+const IFrameWrapper = styled.div`
+    position: relative;
+    padding-bottom: 56.25%; /* proportion value to aspect ratio 16:9 (9 / 16 = 0.5625 or 56.25%) */
+    height: 0;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    border-radius:0 0 0.5rem 0.5rem;
+    box-shadow : 0px 4.41109px 20.291px rgba(16,16,24,0.6);
+    background-image: url("https://i.ibb.co/28yS92Z/If-the-video-does-not-load-please-refresh-the-page.png");
+    background-size: 23rem;
+    background-repeat:no-repeat ;
+    background-position:center;
+  iframe{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border:none;
+    }
+    div{
+        position:absolute;
+        z-index: 10;
+        padding : 1rem;
+    }
+    @media screen and (max-width:600px){
+        padding-bottom: 66.3%;
+        background-size: 13rem;
+    }
+`
 
 const EpisodeLink = styled(Link)`
   text-decoration: none;

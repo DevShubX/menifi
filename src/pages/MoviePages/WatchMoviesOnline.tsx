@@ -15,6 +15,7 @@ const WatchMoviesOnline = () => {
   let episodeId = useParams().episodeId;
   episodeId = episodeId?.replace(":", "").replace("(", "").replace(")", "").replace("+", "/")
   let mediaId = useParams().mediaId?.replace("+", "/");
+  let mediaId_menifi = useParams().mediaId?.replace("movie+","");
   const [movieDetail, setMovieDetails] = useState<any>({});
   const [movieSources, setMovieSources] = useState<any>({});
   const [loading, setLoading] = useState(true);
@@ -22,14 +23,18 @@ const WatchMoviesOnline = () => {
     getMovieStreamingLinks();
   }, []);
 
+  console.log(mediaId);
+  console.log(episodeId);
+
   const getMovieStreamingLinks = async () => {
     window.scroll(0, 0);
     const links = await axios.get(`https://menifi-api.vercel.app/api/links/sources/?episodeId=${episodeId}&mediaId=${mediaId}`);
-    let consumet_data = await axios.get(`https://api.consumet.org/movies/flixhq/info?id=${mediaId}`);
-    setMovieDetails(consumet_data.data);
+    let menifi_data = await axios.get(`https://menifi-api.vercel.app/api/info/flixhq/movie/${mediaId_menifi}`);
+    setMovieDetails(menifi_data.data);
     setMovieSources(links.data.sources);
     setLoading(false)
   }
+
   function checkRating(rating: any) {
     let r = Math.floor(rating * 10);
     if (r >= 70 && r <= 100) {

@@ -17,7 +17,6 @@ const TvShowDetailsPage = () => {
   let tvId = useParams().tvId;
   tvId = tvId?.replace(":", "").replace("(", "").replace(")", "").replace("+", "/");
   let menifi_id = tvId?.replace("tv/", "");
-  const [consumetDetails, setConsumetDetails] = useState<any>({});
   const [menifiDetails, setMenifiDetails] = useState<any>({});
   const [loading, setLoading] = useState(true);
   const [tvshowSeasons, setTvShowSeasons] = useState<any>([]);
@@ -34,11 +33,9 @@ const TvShowDetailsPage = () => {
 
   
   const getTvShowDetails = async () => {
-    let consumet_data = await axios.get(`https://api.consumet.org/movies/flixhq/info?id=${tvId}`);
-    setConsumetDetails(consumet_data.data);
-    let menifi_data = await axios.get(`https://menifi-api.vercel.app/api/info/tv/${menifi_id}`);
-    settvid(menifi_data?.data.movieId?.split("-")[menifi_data?.data.movieId?.split("-").length - 1]);
+    let menifi_data = await axios.get(`https://menifi-api.vercel.app/api/info/flixhq/movie/${menifi_id}`);
     setMenifiDetails(menifi_data.data);
+    settvid(menifi_data?.data.movieId?.split("-")[menifi_data?.data.movieId?.split("-").length - 1]);
     setLoading(false);
   }
   const getTvSeasons = async () => {
@@ -196,40 +193,40 @@ const TvShowDetailsPage = () => {
                 </Poster>
                 <div>
                   <h1>
-                    {consumetDetails.title}
+                    {menifiDetails.title}
                   </h1>
                   <p>
                     <span>Type: </span>
-                    {consumetDetails.type}
+                    {menifiDetails.type}
                   </p>
                   <p>
                     <span>Genres: </span>
-                    {consumetDetails?.genres?.map((item: any, index: any) => (<>{item}  , </>))}
+                    {menifiDetails.genres?.map((item: any, index: any) => (<>{item}  , </>))}
                   </p>
                   <p>
                     <span>Release Date: </span>
-                    {consumetDetails.releaseDate}
+                    {menifiDetails.releaseDate}
                   </p>
                   <p>
                     <span>Overview: </span>
-                    <div style={{ marginTop: "0.5rem" }}>{consumetDetails.description}</div>
+                    <div style={{ marginTop: "0.5rem" }}>{menifiDetails.description}</div>
                   </p>
                   <p>
                     <span>Duration: </span>
-                    {consumetDetails.duration}
+                    {menifiDetails.duration}
                   </p>
                   <p className='rating-p'>
                     <div style={{ width: "50px", height: "50px" }}>
                       <CircularProgressbar
-                        value={consumetDetails.rating * 10}
-                        text={`${consumetDetails.rating * 10}%`}
+                        value={menifiDetails.rating * 10}
+                        text={`${menifiDetails.rating * 10}%`}
                         background
                         backgroundPadding={5}
                         strokeWidth={8}
                         styles={buildStyles({
                           backgroundColor: 'black',
                           textColor: "white",
-                          pathColor: checkRating(consumetDetails.rating),
+                          pathColor: checkRating(menifiDetails.rating),
                           textSize: "1.7rem",
                           trailColor: 'transparent',
                         })} />
@@ -238,15 +235,15 @@ const TvShowDetailsPage = () => {
                   </p>
                   <p>
                     <span>Cast: </span>
-                    {consumetDetails?.casts?.map((item: any, index: any) => (<>{item} ,  </>))}
+                    {menifiDetails?.casts?.map((item: any, index: any) => (<>{item} ,  </>))}
                   </p>
                   <p>
                     <span>Production: </span>
-                    {consumetDetails.production}
+                    {menifiDetails.production}
                   </p>
                   <p>
                     <span>Country: </span>
-                    {consumetDetails.country}
+                    {menifiDetails.country}
                   </p>
                 </div>
               </ContentWrapper>

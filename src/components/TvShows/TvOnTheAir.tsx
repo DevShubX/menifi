@@ -172,10 +172,12 @@ const Heading = styled.div`
     a{
     color: #ebe9e9;
     text-decoration: none;
+    font-family: 'Gilroy-Medium',sans-serif;
     }
     h1{
         font-size: 2.3rem;
         color:#ebe9e9;
+        font-family: 'Gilroy-Bold',sans-serif;
     }
   @media screen and (max-width:900px){
     margin-right: 1rem;

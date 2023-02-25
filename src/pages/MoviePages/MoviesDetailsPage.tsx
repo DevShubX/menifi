@@ -27,12 +27,11 @@ const MoviesDetailsPage = () => {
   }, []);
 
   const getMovieDetail = async () => {
-    let consumet_data = await axios.get(`https://api.consumet.org/movies/flixhq/info?id=${episodeId}`);
-    setConsumetMovieDetail(consumet_data.data);
-    let menifi_data = await axios.get(`https://menifi-api.vercel.app/api/info/movie/${menifi_movieId}`);
+    let menifi_data = await axios.get(`https://menifi-api.vercel.app/api/info/flixhq/movie/${menifi_movieId}`);
     setMenifiMovieDetail(menifi_data.data);
     setLoading(false);
   }
+  console.log(menifiMovieDetail);
 
   function checkRating(rating: any) {
     let r = Math.floor(rating * 10);
@@ -168,56 +167,56 @@ const MoviesDetailsPage = () => {
                 <Poster>
                   <img src={`${menifiMovieDetail?.filmPoster}`} alt="" />
                   <Button onClick={() => updateContinueWatching(currentUser.uid, menifiMovieDetail,
-                    `/movies/watch&episodeId=${consumetMovieDetail?.episodes[0]?.id}&mediaId=${consumetMovieDetail?.id?.replace("/", "+")}`)} to={`/movies/watch&episodeId=${consumetMovieDetail?.episodes[0]?.id}&mediaId=${consumetMovieDetail?.id?.replace("/", "+")}`}>
+                    `/movies/watch&episodeId=${menifiMovieDetail?.episodes[0]?.id}&mediaId=${"movie+" + menifiMovieDetail?.id}`)} to={`/movies/watch&episodeId=${menifiMovieDetail?.episodes[0]?.id}&mediaId=${"movie+"+menifiMovieDetail?.id}`}>
                     Watch Now
                   </Button>
                   <FavAndWishWrapper>
                     <button onClick={() => addMovieToFav(currentUser.uid, menifiMovieDetail,
-                    `/movies/watch&episodeId=${consumetMovieDetail?.episodes[0]?.id}&mediaId=${consumetMovieDetail?.id?.replace("/", "+")}`)}>
+                    `/movies/watch&episodeId=${menifiMovieDetail?.episodes[0]?.id}&mediaId=${"movie+" + menifiMovieDetail?.id}`)}>
                     Add to <BsFillHeartFill className='icon-h'/> 
                     </button>
                     <button onClick={()=>addToWishlist(currentUser.uid, menifiMovieDetail,
-                    `/movies/watch&episodeId=${consumetMovieDetail?.episodes[0]?.id}&mediaId=${consumetMovieDetail?.id?.replace("/", "+")}`)}>
+                    `/movies/watch&episodeId=${menifiMovieDetail?.episodes[0]?.id}&mediaId=${"movie+" + menifiMovieDetail?.id}`)}>
                       Add to <RiFileList3Fill className='icon-h'/>
                     </button>
                   </FavAndWishWrapper>
                 </Poster>
                 <div>
                   <h1>
-                    {consumetMovieDetail.title}
+                    {menifiMovieDetail.title}
                   </h1>
                   <p>
                     <span>Type: </span>
-                    {consumetMovieDetail.type}
+                    {menifiMovieDetail.type}
                   </p>
                   <p>
                     <span>Genres: </span>
-                    {consumetMovieDetail?.genres?.map((item: any, index: any) => (<>{item}  , </>))}
+                    {menifiMovieDetail?.genres?.map((item: any, index: any) => (<>{item}  , </>))}
                   </p>
                   <p>
                     <span>Release Date: </span>
-                    {consumetMovieDetail.releaseDate}
+                    {menifiMovieDetail.releaseDate}
                   </p>
                   <p>
                     <span>Overview: </span>
-                    <div style={{ marginTop: "0.5rem" }}>{consumetMovieDetail.description}</div>
+                    <div style={{ marginTop: "0.5rem" }}>{menifiMovieDetail.description}</div>
                   </p>
                   <p>
                     <span>Duration: </span>
-                    {consumetMovieDetail.duration}
+                    {menifiMovieDetail.duration}
                   </p>
                   <p className='rating-p'>
                     <div style={{ width: "50px", height: "50px" }}>
                       <CircularProgressbar
-                        value={consumetMovieDetail.rating * 10}
-                        text={`${consumetMovieDetail.rating * 10}%`}
+                        value={menifiMovieDetail.rating * 10}
+                        text={`${menifiMovieDetail.rating * 10}%`}
                         background
                         backgroundPadding={5}
                         strokeWidth={8}
                         styles={buildStyles({
                           backgroundColor: 'black',
                           textColor: "white",
-                          pathColor: checkRating(consumetMovieDetail.rating),
+                          pathColor: checkRating(menifiMovieDetail.rating),
                           textSize: "1.7rem",
                           trailColor: 'transparent',
                         })} />
@@ -226,7 +225,7 @@ const MoviesDetailsPage = () => {
                   </p>
                   <p>
                     <span>Cast: </span>
-                    {consumetMovieDetail?.casts?.map((item: any, index: any) => (<>{item} ,  </>))}
+                    {menifiMovieDetail?.casts?.map((item: any, index: any) => (<>{item} ,  </>))}
                   </p>
                 </div>
               </ContentWrapper>
