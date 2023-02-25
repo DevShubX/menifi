@@ -18,22 +18,22 @@ const WatchAnimePage = () => {
   const [loading, setLoading] = useState(true);
   const { width, height } = useWindowDimension();
   const [animeDetails, setAnimeDetails] = useState<any>([]);
-  const [internalPlayer,setInternalPlayer] = useState(true);
   useEffect(() => {
     getAnimeSources();
   }, [episodeSlug]);
 
   const getAnimeSources = async () => {
     setLoading(true);
-    window.scroll(0, 0);
     let result = await axios.get(`https://redux-api-wine.vercel.app/api/getlinks?link=/${episodeSlug}`);
     setAnimeSources(result.data);
     setLoading(false);
   }
-  console.log(animeSources)
+  console.log(animeSources);
+
+
   useEffect(() => {
     getAnimeDetails();
-  }, []);
+  }, [episodeSlug]);
   const getAnimeDetails = async () => {
     let name = animeSources[0].baseEpisodeLink.replace("/", "").replace("-episode-", "");
     let result = await axios.get(`https://redux-api-wine.vercel.app/api/getanime?link=/category/${name}`);
@@ -75,7 +75,7 @@ const WatchAnimePage = () => {
                 </div>
               </div>
             )}
-            {animeId !== "null" && (<EpisodeSectionWithImage id={animeId} animeInfo={animeDetails} />)}
+            <EpisodeSectionWithImage id={animeId} animeInfo={animeDetails} />
             {animeId === "null" && (
               <EpisodeSection>
                 <h1>

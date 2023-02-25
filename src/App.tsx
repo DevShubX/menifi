@@ -69,7 +69,7 @@ function App() {
           <Route path={"/animes"} element={currentUser !== null ? <AnimePage /> : <Navigate to={'/login'} />} />
           <Route path={"/animes/search/:animeName"} element={<AnimeSearchResultPage />} />
           <Route path={"/animes/category/:animeSlug"} element={<AnimeDetailsPage />} />
-          <Route path={"/animes/watch/:episodeSlug&id=:animeId"} element={<WatchAnimePage />} />
+          <Route path={"/animes/watch&episodeId=:episodeSlug&id=:animeId"} element={<WatchAnimePage />} />
           <Route path={"/mangas"} element={currentUser !== null ? <MangaPage /> : <Navigate to={'/login'} />} />
           <Route path={"/mangas/search/:mangaName"} element={<MangaSearchResults />} />
           <Route path={"/mangas/info/:mangaId"} element={<MangaDetailsPage />} />

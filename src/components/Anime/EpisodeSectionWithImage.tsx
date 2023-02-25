@@ -39,7 +39,7 @@ const EpisodeSectionWithImage = ({ id ,animeInfo}: { id: any ,animeInfo:any}) =>
         get(ref(database, `users/${userId}/continueWatching/animes/animes_arr`)).then(async (snapshot: any) => {
             if (snapshot.exists()) {
                 snapshot.forEach((snap: any) => {
-                    if (snap.val().movieId !== newContinueWatching.id) {
+                    if (snap.val().id !== newContinueWatching.id) {
                         arr.push(snap.val());
                     }
                 });
@@ -64,7 +64,7 @@ const EpisodeSectionWithImage = ({ id ,animeInfo}: { id: any ,animeInfo:any}) =>
         get(ref(database, `users/${userId}/recentlyWatched/recently_watched_arr`)).then(async (snapshot: any) => {
             if (snapshot.exists()) {
                 snapshot.forEach((snap: any) => {
-                    if (snap.val().movieId !== newContinueWatching.id) {
+                    if (snap.val().id !== newContinueWatching.id) {
                         arr2.push(snap.val());
                     }
                 });
@@ -137,8 +137,8 @@ const EpisodeSectionWithImage = ({ id ,animeInfo}: { id: any ,animeInfo:any}) =>
                     >
                         {animeEpisodes.map((episode: any, index: any) => (
                             <SwiperSlide>
-                                <Wrapper to={`/animes/watch/${episode.id}&id=${id}`} onClick={()=>updateContinueWatching(currentUser.uid,animeInfo[0].anilistResponse,id,
-                                    `/animes/watch/${episode.id}&id=${id}`)}>
+                                <Wrapper key={episode.image} to={`/animes/watch&episodeId=${episode.id}&id=${id}`} onClick={()=>updateContinueWatching(currentUser.uid,animeInfo[0].anilistResponse,id,
+                                    `/animes/watch&episodeId=${episode.id}&id=${id}`)}>
                                     <img src={`https://images.weserv.nl/?url=${episode.image}`} alt="" />
                                     <p style={{ color: color !== null ? color : "white" }}>Ep {index + 1}: {episode.title}</p>
                                 </Wrapper>
