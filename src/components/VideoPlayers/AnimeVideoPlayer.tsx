@@ -91,25 +91,17 @@ const AnimeVideoPlayer = ({ sourceLinks ,internalPlayer,setInternalPlayer}: { so
                 });
 
                 let plyr: any;
-                const playPauseButton:any = document.querySelector('.plyr__control[data-plyr="play"]');
-                playPauseButton.addEventListener('click', () => {
-                if (player.paused) {
-                    player.play();
-                } else {
-                    player.pause();
-                }
-                });
                 player.on("ready", () => {
                     plyr = document.querySelector(".plyr_controls");
                 });
 
                 player.on("enterfullscreen", (event: any) => {
-                    plyr.appendChild(button);
+                   
                     window.screen.orientation.lock("landscape");
                 });
 
                 player.on("exitfullscreen", (event: any) => {
-                    document.querySelector(".skip-button")?.remove();
+                    
                     window.screen.orientation.lock("portrait");
                 });
 

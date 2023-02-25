@@ -69,47 +69,8 @@ const WatchAnimePage = () => {
                 </div>
                 <div>
                   <div>
-                    {/* <ArtPlayerAnime sourcesLinks={animeSources[0].sources} /> */}
-                    {
-                      internalPlayer && (
-                        <AnimeVideoPlayer sourceLinks={animeSources[0].sources} internalPlayer={internalPlayer} setInternalPlayer={setInternalPlayer}></AnimeVideoPlayer>
-                      )
-                    }
-                    {
-                      !internalPlayer && (
-                        <div>
-                          <ExternalPlayerContainer>
-                            <IconContext.Provider
-                            value={{
-                              size : '1.5rem',
-                              color : 'white',
-                              style : {
-                                verticalAlign :'middle'
-                              }
-                            }}
-                            >
-                              <p>External Player (Contain Ads)</p>
-                              <div>
-                                    <div className='tooltip'>
-                                      <button onClick={()=>setInternalPlayer(!internalPlayer)}>
-                                          <HiOutlineSwitchHorizontal/>
-                                      </button>
-                                      <span className="tooltiptext">server</span>
-                                    </div>
-                              </div>
-                            </IconContext.Provider>
-                          </ExternalPlayerContainer>
-                          <IFrameWrapper>
-                            <iframe
-                              id = "video"
-                              title={animeSources[0].titleName}
-                              src ={animeSources[0].vidstreaming}
-                              allowFullScreen
-                              >
-                            </iframe>
-                          </IFrameWrapper>
-                        </div> 
-                      )}
+                      <ArtPlayerAnime sourcesLinks={animeSources[0].sources} />
+                      {/* <AnimeVideoPlayer sourceLinks={animeSources[0].sources} internalPlayer={internalPlayer} setInternalPlayer={setInternalPlayer}/> */}
                   </div>
                 </div>
               </div>

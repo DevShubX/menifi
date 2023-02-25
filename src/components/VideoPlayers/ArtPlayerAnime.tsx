@@ -33,8 +33,8 @@ const ArtPlayerAnime = ({sourcesLinks}:{sourcesLinks:any}) => {
                 crossOrigin: 'anonymous',
             },
             quality:[
-                {   
-                    html : 'Auto',
+                {
+                    html:'Auto',
                     url : src,
                 },
             ],
@@ -51,6 +51,7 @@ const ArtPlayerAnime = ({sourcesLinks}:{sourcesLinks:any}) => {
                     }
                 },
             },
+            
             icons: {
                 indicator: '<img width="16" heigth="16" src="/assets/indicator.svg">',
             },
@@ -61,7 +62,7 @@ const ArtPlayerAnime = ({sourcesLinks}:{sourcesLinks:any}) => {
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [src]);
+    }, []);
 
     return <VideoDiv ref={artRef}></VideoDiv>;
 }
