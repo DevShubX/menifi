@@ -1,7 +1,6 @@
-import { async } from '@firebase/util';
-import { child, get, getDatabase, onChildChanged, onChildRemoved, onValue, ref, set } from 'firebase/database';
+import { onChildRemoved, onValue, ref, set } from 'firebase/database';
 import React, { useEffect, useState } from 'react'
-import { AiFillCloseCircle, AiOutlineCloseCircle, AiOutlineCloseSquare } from 'react-icons/ai';
+import { AiFillCloseCircle} from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Scrollbar } from 'swiper';

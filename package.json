@@ -14,6 +14,7 @@
     "axios": "^1.1.2",
     "dotenv": "^16.0.3",
     "firebase": "^9.13.0",
+    "framer-motion": "^10.0.0",
     "hls.js": "^1.2.5-0.canary.8651",
     "plyr": "^3.7.2",
     "react": "^18.2.0",

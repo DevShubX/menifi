@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
@@ -15,8 +16,9 @@ const MoviesSearchResults = () => {
     getresult();
   }, [movieName]);
   const getresult = async () => {
+    window.scrollTo(0,0);
     setLoading(true);
-    let result = await axios.get(`https://menifi-api.vercel.app/api/search/${movieName}`)
+    let result = await axios.get(`https://menifi-api.vercel.app/api/search/${movieName}`);
     setSearchResult(result.data);
     setLoading(false);
   }
@@ -30,12 +32,19 @@ const MoviesSearchResults = () => {
             </Heading>
             {loading && <SearchResultsSkeleton movieName={movieName}/>}
             {!loading && (<CardWrapper>
-              {searchResult.map((item:any,index:any)=>(item.type!=='tv')?(
-                <Wrapper to={"/movies/details&id=" + (item.href.replace("/","").replace("/","+").replace("https:/dopebox.se/","").replace("https://dopebox.se/",""))}>
+              {searchResult.map((item:any,index:any)=>(item.type!=='tv')&&(
+                 <motion.div
+                 initial={{opacity:0,translateX:-50}}
+                 animate={{opacity:1,translateX:0}}
+                 transition={{duration:0.3,delay:index*0.1}}
+                 key ={item.id}
+                 >
+                  <Wrapper to={"/movies/details&id=" + (item.href.replace("/","").replace("/","+").replace("https:/dopebox.se/","").replace("https://dopebox.se/",""))}>
                   <img src={item.imgUrl} alt={item.title} key={item.id}/>
                   <p>{item.title}</p>
                 </Wrapper>
-                ):(<></>))}
+                  </motion.div>
+                ))}
             </CardWrapper>)}
           </Parent>
         </MainDiv>

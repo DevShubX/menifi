@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components';
@@ -14,7 +15,8 @@ const TvShowsSearchResults = () => {
         getSearchResults();
     },[tvshowname]);
     const getSearchResults =async()=>{
-        setLoading(true)
+        window.scrollTo(0,0);
+        setLoading(true);
         let search_result = await axios.get(`https://menifi-api.vercel.app/api/search/${tvshowname}`)
         setSearchResult(search_result.data);
         setLoading(false);
@@ -30,12 +32,19 @@ const TvShowsSearchResults = () => {
                 {loading && (<SearchResultsSkeleton movieName={tvshowname}/>)}
                 {!loading && (
                     <CardWrapper>
-                        {searchResult.map((item:any,index:any)=>(item.type === 'tv' && item.href.includes("tv"))?(
+                        {searchResult.map((item:any,index:any)=>(item.type === 'tv' && item.href.includes("tv"))&&(
+                          <motion.div
+                          initial={{opacity:0,translateX:-50}}
+                          animate={{opacity:1,translateX:0}}
+                          transition={{duration:0.3,delay:index*0.1}}
+                          key={item.id}
+                          >
                             <Wrapper to={"/tvshows/details&id="+(item.href.replace("https:/dopebox.se/","").replace("https://dopebox.se/","").replace("/tv","tv").replace("tv/","tv+"))}>
-                                <img src={item.imgUrl} alt="" key={item.id} />
-                                <p>{item.title}</p>
+                                  <img src={item.imgUrl} alt="" key={item.id} />
+                                  <p>{item.title}</p>
                             </Wrapper>
-                        ):(<></>))}
+                          </motion.div>
+                        ))}
                     </CardWrapper>
                 )}
             </Parent>

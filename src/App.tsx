@@ -38,6 +38,10 @@ import SongsSearchPage from './pages/MusicPages/SongsSearchPage';
 import AllSongsPage from './pages/MusicPages/AllSongsPage';
 import MusicPlayer from './components/MusicPlayer/MusicPlayer';
 import AlbumsDetails from './pages/MusicPages/AlbumsDetails';
+import PopularTVShowsPage from './pages/TvShowsPages/PopularTVShowsPage';
+import TopRatedTvShowsPage from './pages/TvShowsPages/TopRatedTvShowsPage';
+import TVOnAirPage from './pages/TvShowsPages/TVOnAirPage';
+import TrendingTvShowsPage from './pages/TvShowsPages/TrendingTvShowsPage';
 function App() {
   const { width, height } = useWindowDimension();
   const { openMenu, currentUser, setCurrentUser, activeSong ,isActive} = useStateContext();
@@ -86,6 +90,10 @@ function App() {
           <Route path={'/music/search/:songName'} element={<SongsSearchPage />} />
           <Route path={'/music/allsongs/:songName'} element={<AllSongsPage />} />
           <Route path={'/music/albumdetails/:albumId'} element={<AlbumsDetails/>}/>
+          <Route path={"/tvshows/popular"} element={currentUser !== null ? <PopularTVShowsPage /> : <Navigate to={'/login'} />} />
+          <Route path={"/tvshows/top_rated"} element={currentUser !== null ? <TopRatedTvShowsPage /> : <Navigate to={'/login'} />}/>
+          <Route path={"/tvshows/on_the_air"} element={currentUser !== null ? <TVOnAirPage /> : <Navigate to={'/login'} />}/>
+          <Route path={"/tvshows/trending_tvshows"} element={currentUser !== null ? <TrendingTvShowsPage /> : <Navigate to={'/login'} />}/>
         </Routes>
         <div className='player'>
           {activeSong?.name && isActive && <MusicPlayer />}

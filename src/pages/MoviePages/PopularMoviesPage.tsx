@@ -6,8 +6,9 @@ import SearchResultsSkeleton from '../../components/Skeletons/SearchResultsSkele
 import { Link } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import useWindowDimension from '../../hooks/useWindowDimension';
+import { motion } from 'framer-motion';
 const PopularMoviesPage = () => {
-    const [PopularMovies, setPopularMovies] = useState<any>([]);
+    const [PopularMovies, setPopularMovies] = useState<any>({});
     const [loading, setLoading] = useState(true);
     const [pageNumber,setPageNumber] = useState(1);
     const { width } = useWindowDimension();
@@ -33,14 +34,23 @@ const PopularMoviesPage = () => {
                 {!loading && (
                     <>
                         <CardWrapper>
-                            {PopularMovies.results.map((item: any, index: any) => (
-                                <Links to={`/movies/search/` + (item.title !== null || undefined ? item.title : item.original_title)}>
-                                    <img src={`https://image.tmdb.org/t/p/w154/${item.poster_path}`} alt="" />
-                                    <p>
-                                        {item.title !== null || undefined ? item.title : item.original_title}
-                                    </p>
-                                </Links>
-                            ))}
+                            {PopularMovies.results.map((item: any, index: any) => {
+                                return (
+                                    <motion.div
+                                    initial={{opacity:0,translateX:-50}}
+                                    animate={{opacity:1,translateX:0}}
+                                    transition={{duration:0.3,delay:index*0.1}}
+                                    key ={item.id}
+                                    >
+                                        <Links to={`/movies/search/` + (item.title !== null || undefined ? item.title : item.original_title)}>
+                                            <img src={`https://image.tmdb.org/t/p/w154/${item.poster_path}`} alt="" />
+                                            <p>
+                                                {item.title !== null || undefined ? item.title : item.original_title}
+                                            </p>
+                                         </Links>
+                                </motion.div>
+                                )
+                                })}
                         </CardWrapper>
                         
                     </>
@@ -83,7 +93,7 @@ const Links = styled(Link)`
     }
     p{
         color : white;
-        font-family::"Gilroy-Bold",sans-serif;
+        font-family:"Gilroy-Bold",sans-serif;
         max-width:160px;
         @media screen and (max-width:400px){
             font-size : 0.9rem;

@@ -13,6 +13,8 @@ const SongFetchAPI = (songName, pageNumber) => {
   useEffect(()=>{
     getSongs();
   },[pageNumber]);
+
+  
   const getSongs=async()=>{
     setLoading(true);
     let songs = await axios.get(`https://saavn.me/search/songs?query=${songName?.replaceAll(" ","+")}&page=${pageNumber}&limit=10`);

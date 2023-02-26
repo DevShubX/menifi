@@ -1,74 +1,75 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import styled from 'styled-components'
-import useWindowDimension from '../../hooks/useWindowDimension';
 import axios from 'axios';
-import NavBar from '../../components/NavBars/NavBar';
-import SearchResultsSkeleton from '../../components/Skeletons/SearchResultsSkeleton';
-import ReactPaginate from 'react-paginate';
 import { motion } from 'framer-motion';
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import ReactPaginate from 'react-paginate';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components'
+import NavBar from '../../components/NavBars/NavBar'
+import SearchResultsSkeleton from '../../components/Skeletons/SearchResultsSkeleton';
+import useWindowDimension from '../../hooks/useWindowDimension';
 
-const TopTrendingPage = () => {
-    const [loading,setLoading] = useState(true);
-    const [TrendingMovies,setTrendingMovies] = useState<any>({});
-    const {width} = useWindowDimension();
+const PopularTVShowsPage = () => {
+
     const [pageNumber,setPageNumber] = useState(1);
+    const [loading,setLoading] = useState(true);
+    let [PopularTvShows,setPopularTvShows] = useState<any>({});
+    const {width} = useWindowDimension();
 
     useEffect(()=>{
-        getTopTrendingMovies();
+        getPopTvShows();
     },[pageNumber]);
 
-    const getTopTrendingMovies=async()=>{
+    const getPopTvShows =async()=>{
         setLoading(true);
-        let result = await axios.get(`https://api.themoviedb.org/3/trending/movie/week?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=${pageNumber}`);
-        setTrendingMovies(result.data);
+        let pop_tv = await axios.get(`https://api.themoviedb.org/3/tv/popular?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=${pageNumber}`);
+        setPopularTvShows(pop_tv.data);
         setLoading(false);
     }
+
   return (
     <div>
         <MainDiv>
-                <NavBar placeHolder={"Search For Movies..."} path={"/movies/search/"} />
-                <Heading>
-                    <span>Top Trending Movies</span> Results
-                </Heading>
-                {loading && <SearchResultsSkeleton movieName={'Top Trending Movies Result'} />}
-                {!loading && (
-                    <>
-                        <CardWrapper>
-                            {TrendingMovies.results.map((item: any, index: any) => {
-                                return (
-                                    <motion.div
-                                    initial={{opacity:0,translateX:-50}}
-                                    animate={{opacity:1,translateX:0}}
-                                    transition={{duration:0.3,delay:index*0.1}}
-                                    key ={item.id}
-                                    >
-                                        <Links to={`/movies/search/` + (item.title !== null || undefined ? item.title : item.original_title)}>
-                                            <img src={`https://image.tmdb.org/t/p/w154/${item.poster_path}`} alt="" />
-                                            <p>
-                                                {item.title !== null || undefined ? item.title : item.original_title}
-                                            </p>
-                                         </Links>
-                                </motion.div>
-                                )
-                                })}
-                        </CardWrapper>
+            <NavBar placeHolder={"Search For TV Shows..."} path={'/tvshows/search/'} />
+            <Heading>
+                <span>Popular TV Shows</span> Results
+            </Heading>
+            {loading && <SearchResultsSkeleton movieName={<Heading>
+                <span>Popular TV Shows</span> Results
+            </Heading>}/>}
+            {!loading && (
+                <>
+                <CardWrapper>
+                     {PopularTvShows.results.map((item:any,index:any)=>(
+                        <motion.div
+                        initial={{opacity:0,translateX:-50}}
+                        animate={{opacity:1,translateX:0}}
+                        transition={{duration:0.3,delay:index*0.1}}
+                        key ={item.id}
+                        >
+                            <Links to={"/tvshows/search/" + (item.name !== null || undefined ? item.name : item.original_name)}>
+                                <img src={`https://image.tmdb.org/t/p/w154/${item.poster_path}`} alt={`${item.name}`} />
+                                <p>{item.name !== null || undefined ? item.name : item.original_name}</p>
+                            </Links>
+                        </motion.div>
                         
-                    </>
-                )}
-                <ReactPaginate
-                            className='React-paginate'
-                            pageCount={TrendingMovies.total_pages}
-                            nextLabel="Next >"
-                            previousLabel="< Previous"
-                            breakLabel="..."
-                            pageRangeDisplayed={width <= 600 ? 2 : 5}
-                            onPageChange={(event: any) => {
-                                setPageNumber(event.selected + 1);
-                            }}
-                        />
-            </MainDiv>
-    </div>
+                     ))}
+                </CardWrapper>
+            </>
+            )}
+            <ReactPaginate
+                className='React-paginate'
+                pageCount={PopularTvShows.total_pages}
+                nextLabel="Next >"
+                previousLabel="< Previous"
+                breakLabel="..."
+                pageRangeDisplayed={width <= 600 ? 2 : 5}
+                onPageChange={(event: any) => {
+                    setPageNumber(event.selected + 1);
+                }}
+            />
+        </MainDiv>
+
+        </div>
   )
 }
 const Links = styled(Link)`
@@ -93,7 +94,7 @@ const Links = styled(Link)`
     }
     p{
         color : white;
-        font-family: "Gilroy-Bold",sans-serif;
+        font-family:"Gilroy-Bold",sans-serif;
         max-width:160px;
         @media screen and (max-width:400px){
             font-size : 0.9rem;
@@ -134,7 +135,6 @@ const CardWrapper = styled.div`
         grid-row-gap: 1.5rem ;
     }
 `
-
 const Heading = styled.div`
     font-family:"Gilroy-Light",sans-serif;
     font-size : 1.8rem;
@@ -152,6 +152,7 @@ const Heading = styled.div`
         font-size : 1.3rem;
     }
 `
+
 
 const MainDiv = styled.div`
   position: relative;
@@ -201,4 +202,4 @@ const MainDiv = styled.div`
     }
 }
 `
-export default TopTrendingPage
+export default PopularTVShowsPage
