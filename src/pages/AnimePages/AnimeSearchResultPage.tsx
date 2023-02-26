@@ -10,7 +10,7 @@ const AnimeSearchResultPage = () => {
   animeName = animeName?.replace(":", "").replace("(", "").replace(")", "");
   const [searchResult, setSearchResult] = useState<any>([]);
   const [loading, setLoading] = useState(true);
-
+  
   useEffect(() => {
     getAnimeSearchResult();
   }, [animeName]);

@@ -31,7 +31,6 @@ const MoviesDetailsPage = () => {
     setMenifiMovieDetail(menifi_data.data);
     setLoading(false);
   }
-  console.log(menifiMovieDetail);
 
   function checkRating(rating: any) {
     let r = Math.floor(rating * 10);

@@ -45,11 +45,11 @@ const FavouritePage = () => {
             {!loading && (
                 <CardWrapper>
                     {myfav.map((item:any,index:any)=>(
-                        <Wrapper to={item.movieStreamingLink.includes('tv')? 
+                        <Wrapper to={item.animePageLink ? item.animePageLink : item.movieStreamingLink.includes('tv')? 
                         "/tvshows/details&id="+(item.movieStreamingLink.replace("https:/dopebox.se/","").replace("https://dopebox.se/","").replace("/tv","tv").replace("tv/","tv+")):
                         item.movieStreamingLink}>
-                            <img src={item.filmPoster} alt="" />
-                            <p>{item.title}</p>
+                            <img src={item.filmPoster ? item.filmPoster : item.anilistPoster.large} alt="" />
+                            <p>{item.animePageLink ? item.title.userPreferred !== null ? item.title.userPreferred : item.title.romaji : item.title}</p>
                         </Wrapper>
                     ))}
                 </CardWrapper>

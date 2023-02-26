@@ -38,7 +38,6 @@ const WatchAnimePage = () => {
     let result = await axios.get(`https://redux-api-wine.vercel.app/api/getanime?link=/category/${animeSlug}`);
     setAnimeDetails(result.data);
   }
-  console.log(animeDetails)
   return (
     <div>
       <MainDiv>

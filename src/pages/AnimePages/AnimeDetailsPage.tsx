@@ -11,9 +11,11 @@ import EpisodeSectionWithImage from '../../components/Anime/EpisodeSectionWithIm
 import RelatedAnimePictures from '../../components/Anime/RelatedAnimePictures';
 import NavBar from '../../components/NavBars/NavBar';
 import DetailsPageSkeleton from '../../components/Skeletons/DetailsPageSkeleton';
+import { database } from '../../Firebase/firebase';
 import { useStateContext } from '../../GlobalContext/ContextProvider';
 import useWindowDimension from '../../hooks/useWindowDimension';
-
+import { get, ref, set } from 'firebase/database';
+import toast from 'react-hot-toast';
 const AnimeDetailsPage = () => {
   let animeSlug = useParams().animeSlug;
   animeSlug = animeSlug?.replace(":", "").replace("(", "").replace(")", "");
@@ -22,6 +24,7 @@ const AnimeDetailsPage = () => {
   const { width, height } = useWindowDimension();
   const [expanded, setExpanded] = useState(false);
   const [color, setColor] = useState("black");
+  const {currentUser} = useStateContext();
   useEffect(() => {
     getAnimeDetails();
   }, []);
@@ -33,8 +36,7 @@ const AnimeDetailsPage = () => {
       setColor("black");
     setLoading(false);
   };
-  console.log(animeSlug);
-  console.log(animeDetails);
+
 
   function checkRating(r: any) {
     if (r >= 70 && r <= 100) {
@@ -53,6 +55,63 @@ const AnimeDetailsPage = () => {
       return "#f54242";
     }
   }
+
+  const addAnimeToFav=(userId: any, newContinueWatching: any, animeString: any)=>{
+    const dbref = ref(database,`users/${userId}/favourites/`);
+    let arr: any = [];
+    get(ref(database,`users/${userId}/favourites/fav_arr`)).then(async(snapshot)=>{
+      if(snapshot.exists()){
+        snapshot.forEach((snap:any)=>{
+          if (snap.val().movieId || snap.val().id !== newContinueWatching.id) {
+            arr.push(snap.val());
+          }
+        });
+        arr.push({ ...newContinueWatching, animePageLink: animeString });
+        set(dbref, {
+          fav_arr: arr,
+        });
+      }else {
+        arr.push({ ...newContinueWatching, animePageLink: animeString });
+        console.log("No data available");
+        set(dbref, {
+          fav_arr: arr,
+        })
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+    toast.success("Added To Favourites");
+  }
+
+  const addToWishlist=(userId: any, newContinueWatching: any, animeString: any)=>{
+    const dbref = ref(database,`users/${userId}/wishlist/`);
+    let arr: any = [];
+    get(ref(database,`users/${userId}/wishlist/wishlist_arr`)).then(async(snapshot)=>{
+      if(snapshot.exists()){
+        snapshot.forEach((snap:any)=>{
+          if (snap.val().movieId || snap.val().id !== newContinueWatching.id) {
+            arr.push(snap.val());
+          }
+        });
+        arr.push({ ...newContinueWatching, animePageLink: animeString });
+        set(dbref, {
+          wishlist_arr: arr,
+        });
+      }else {
+        arr.push({ ...newContinueWatching, animePageLink: animeString });
+        console.log("No data available");
+        set(dbref, {
+          wishlist_arr: arr,
+        })
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+    toast.success("Added To Wishlist");
+  }
+
+
+
   return (
     <div>
       <MainDiv>
@@ -76,10 +135,12 @@ const AnimeDetailsPage = () => {
                     Watch Now
                   </Button>
                   <FavAndWishWrapper>
-                    <button>
-                    Add to <BsFillHeartFill className='icon-h'/> 
+                    <button onClick={()=>addAnimeToFav(currentUser.uid,animeDetails[0].anilistResponse,
+                      `/animes/category/${animeSlug}`)}>
+                    Add to <BsFillHeartFill className='icon-h' /> 
                     </button>
-                    <button>
+                    <button onClick={()=>addToWishlist(currentUser.uid,animeDetails[0].anilistResponse,
+                      `/animes/category/${animeSlug}`)}>
                       Add to <RiFileList3Fill className='icon-h'/>
                     </button>
                   </FavAndWishWrapper>

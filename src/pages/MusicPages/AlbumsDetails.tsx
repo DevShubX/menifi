@@ -36,7 +36,6 @@ const AlbumsDetails = () => {
     const getTime = (time: any) => `${Math.floor(time / 60)}:${(`0${Math.floor(time % 60)}`).slice(-2)}`;
 
     setCurrentSongs(albumDetails?.songs);
-    console.log(albumDetails);
     return (
         <div>
             <MainDiv>

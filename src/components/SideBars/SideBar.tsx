@@ -128,6 +128,7 @@ const MenuArea = styled.div`
   }
   @media screen and (max-width:600px){
     padding : 0 0 4rem  0 ;
+    
   }
   
 `
@@ -138,6 +139,7 @@ const Nav = styled.div`
   height: 100%;
   z-index:10000;
   overflow-y: auto;
+  
   .close-icon{
     position: absolute;
     top: 5px;

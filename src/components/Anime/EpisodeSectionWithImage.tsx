@@ -34,10 +34,6 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
         setAnimeEpisodes(result.data.episodes);
         setLoading(false);
     }
-
-
-    console.log(animeDetails);
-    console.log(animeSlug);
     const updateContinueWatching = (userId: any, newContinueWatching: any, animeString: any, StreamingLink: any) => {
         const db = database;
         const dbref = ref(database, `users/${userId}/continueWatching/animes`);
