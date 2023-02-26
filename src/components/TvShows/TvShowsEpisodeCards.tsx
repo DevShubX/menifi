@@ -24,6 +24,7 @@ const TvShowsEpisodeCards = ({ tvSeasonID, mediaId, tvDetails }: { tvSeasonID: a
         setLoading(false);
     }
 
+
     const updateContinueWatching = (userId: any, newContinueWatching: any, tvstring: any, StreamingLink: any) => {
         const db = database;
         const dbref = ref(database, `users/${userId}/continueWatching/tvshows`);

@@ -33,7 +33,7 @@ const TvShowDetailsPage = () => {
 
   
   const getTvShowDetails = async () => {
-    let menifi_data = await axios.get(`https://menifi-api.vercel.app/api/info/flixhq/movie/${menifi_id}`);
+    let menifi_data = await axios.get(`https://menifi-api.vercel.app/api/info/flixhq/tv/${menifi_id}`);
     setMenifiDetails(menifi_data.data);
     settvid(menifi_data?.data.movieId?.split("-")[menifi_data?.data.movieId?.split("-").length - 1]);
     setLoading(false);
@@ -44,6 +44,7 @@ const TvShowDetailsPage = () => {
     setTvShowSeasons(seasons?.data);
   }
 
+ 
   function checkRating(rating: any) {
     let r = Math.floor(rating * 10);
     if (r >= 70 && r <= 100) {

@@ -13,8 +13,6 @@ const AnimeVideoPlayer = ({ sourceLinks ,internalPlayer,setInternalPlayer}: { so
     // }
 
     const [ChangeSource ,setChangeSource] = useState(false);
-
-    console.log(sourceLinks)
     let src:any;
     if(!ChangeSource){
         src =sourceLinks.sources[0].file;

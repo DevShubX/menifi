@@ -15,23 +15,29 @@ import { database } from '../../Firebase/firebase';
 import { get, ref, set, update } from 'firebase/database';
 import { useStateContext } from '../../GlobalContext/ContextProvider';
 
-const EpisodeSectionWithImage = ({ id ,animeInfo}: { id: any ,animeInfo:any}) => {
+const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInfo:any,animeSlug:any}) => {
     const [animeEpisodes, setAnimeEpisodes] = useState<any>([]);
     const [loading, setLoading] = useState(true);
     const [color, setColor] = useState("");
     const { width, height } = useWindowDimension();
     const [visible, setMoreVisible] = useState(12);
-    const {currentUser} = useStateContext();
+    const {currentUser,} = useStateContext();
+    const [animeDetails,setAnimeDetails] = useState<any>({});
     useEffect(() => {
         getAnimeData();
     }, [id]);
 
     const getAnimeData = async () => {
         let result = await axios.get(`https://api.consumet.org/meta/anilist/info/${id}`);
+        setAnimeDetails(result.data)
         setColor(result.data.color);
         setAnimeEpisodes(result.data.episodes);
         setLoading(false);
     }
+
+
+    console.log(animeDetails);
+    console.log(animeSlug);
     const updateContinueWatching = (userId: any, newContinueWatching: any, animeString: any, StreamingLink: any) => {
         const db = database;
         const dbref = ref(database, `users/${userId}/continueWatching/animes`);
@@ -137,8 +143,8 @@ const EpisodeSectionWithImage = ({ id ,animeInfo}: { id: any ,animeInfo:any}) =>
                     >
                         {animeEpisodes.map((episode: any, index: any) => (
                             <SwiperSlide>
-                                <Wrapper key={episode.image} to={`/animes/watch&episodeId=${episode.id}&id=${id}`} onClick={()=>updateContinueWatching(currentUser.uid,animeInfo[0].anilistResponse,id,
-                                    `/animes/watch&episodeId=${episode.id}&id=${id}`)}>
+                                <Wrapper to={`/animes/watch&episodeId=${episode.id}&animeName=${animeSlug}&id=${id}`} onClick={()=>updateContinueWatching(currentUser.uid,animeInfo[0].anilistResponse,id,
+                                    `/animes/watch&episodeId=${episode.id}&animeName=${animeSlug}&id=${id}`)}>
                                     <img src={`https://images.weserv.nl/?url=${episode.image}`} alt="" />
                                     <p style={{ color: color !== null ? color : "white" }}>Ep {index + 1}: {episode.title}</p>
                                 </Wrapper>
@@ -154,8 +160,8 @@ const EpisodeSectionWithImage = ({ id ,animeInfo}: { id: any ,animeInfo:any}) =>
                         <Content>
                             <CardWrapper>
                                 {animeEpisodes.slice(0, visible).map((episode: any, index: any) => (
-                                    <Link to={`/animes/watch/${episode.id}&id=${id}`} onClick={()=>updateContinueWatching(currentUser.uid,animeInfo[0].anilistResponse,id,
-                                    `/animes/watch/${episode.id}&id=${id}`)}>
+                                    <Link to={`/animes/watch&episodeId=${episode.id}&animeName=${animeSlug}&id=${id}`} onClick={()=>updateContinueWatching(currentUser.uid,animeInfo[0].anilistResponse,id,
+                                    `/animes/watch&episodeId=${episode.id}&animeName=${animeSlug}&id=${id}`)}>
                                         <img src={`https://images.weserv.nl/?url=${episode.image}`} alt="" />
                                         <p style={{ color: color !== null ? color : "white" }}>Ep {index + 1}: {episode.title}</p>
                                     </Link>

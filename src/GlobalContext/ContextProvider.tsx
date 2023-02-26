@@ -18,7 +18,6 @@ interface type{
     isActive : boolean,
     setIsActive:Dispatch<SetStateAction<boolean>>,
 
-
 }
 
 export const StateContext = createContext<type>({} as any);

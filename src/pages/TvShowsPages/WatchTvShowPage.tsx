@@ -43,7 +43,7 @@ const WatchTvShowPage = () => {
     setTvShowSeasons(seasons?.data);
   }
   const getTvshowsDetails=async()=>{
-    let menifi_data = await axios.get(`https://menifi-api.vercel.app/api/info/tv/${menifi_id}`);
+    let menifi_data = await axios.get(`https://menifi-api.vercel.app/api/info/flixhq/tv/${menifi_id}`);
     setTvshowsDetails(menifi_data.data);
   }
   return (

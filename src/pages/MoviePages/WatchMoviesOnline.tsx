@@ -23,8 +23,7 @@ const WatchMoviesOnline = () => {
     getMovieStreamingLinks();
   }, []);
 
-  console.log(mediaId);
-  console.log(episodeId);
+  
 
   const getMovieStreamingLinks = async () => {
     window.scroll(0, 0);

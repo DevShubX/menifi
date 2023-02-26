@@ -10,35 +10,35 @@ import NavBar from '../../components/NavBars/NavBar'
 import DetailsPageSkeleton from '../../components/Skeletons/DetailsPageSkeleton'
 import AnimeVideoPlayer from '../../components/VideoPlayers/AnimeVideoPlayer'
 import ArtPlayerAnime from '../../components/VideoPlayers/ArtPlayerAnime'
+import { useStateContext } from '../../GlobalContext/ContextProvider'
 import useWindowDimension from '../../hooks/useWindowDimension'
 const WatchAnimePage = () => {
   let episodeSlug = useParams().episodeSlug;
   let animeId = useParams().animeId;
+  let animeSlug = useParams().animeSlug;
   const [animeSources, setAnimeSources] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const { width, height } = useWindowDimension();
   const [animeDetails, setAnimeDetails] = useState<any>([]);
+  const [episodeId,setEpisodeId] = useState(episodeSlug?.split("-")[episodeSlug?.split("-").length -1]);
   useEffect(() => {
     getAnimeSources();
   }, [episodeSlug]);
 
   const getAnimeSources = async () => {
-    setLoading(true);
     let result = await axios.get(`https://redux-api-wine.vercel.app/api/getlinks?link=/${episodeSlug}`);
     setAnimeSources(result.data);
     setLoading(false);
   }
-  console.log(animeSources);
-
-
   useEffect(() => {
     getAnimeDetails();
-  }, [episodeSlug]);
+  }, []);
+  
   const getAnimeDetails = async () => {
-    let name = animeSources[0].baseEpisodeLink.replace("/", "").replace("-episode-", "");
-    let result = await axios.get(`https://redux-api-wine.vercel.app/api/getanime?link=/category/${name}`);
+    let result = await axios.get(`https://redux-api-wine.vercel.app/api/getanime?link=/category/${animeSlug}`);
     setAnimeDetails(result.data);
   }
+  console.log(animeDetails)
   return (
     <div>
       <MainDiv>
@@ -75,7 +75,7 @@ const WatchAnimePage = () => {
                 </div>
               </div>
             )}
-            <EpisodeSectionWithImage id={animeId} animeInfo={animeDetails} />
+            <EpisodeSectionWithImage id={animeId} animeInfo={animeDetails} animeSlug={animeSlug}/>
             {animeId === "null" && (
               <EpisodeSection>
                 <h1>

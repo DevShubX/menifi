@@ -62,7 +62,7 @@ const ArtPlayerAnime = ({sourcesLinks}:{sourcesLinks:any}) => {
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [src]);
 
     return <VideoDiv ref={artRef}></VideoDiv>;
 }

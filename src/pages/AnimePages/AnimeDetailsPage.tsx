@@ -11,6 +11,7 @@ import EpisodeSectionWithImage from '../../components/Anime/EpisodeSectionWithIm
 import RelatedAnimePictures from '../../components/Anime/RelatedAnimePictures';
 import NavBar from '../../components/NavBars/NavBar';
 import DetailsPageSkeleton from '../../components/Skeletons/DetailsPageSkeleton';
+import { useStateContext } from '../../GlobalContext/ContextProvider';
 import useWindowDimension from '../../hooks/useWindowDimension';
 
 const AnimeDetailsPage = () => {
@@ -24,16 +25,16 @@ const AnimeDetailsPage = () => {
   useEffect(() => {
     getAnimeDetails();
   }, []);
-
   const getAnimeDetails = async () => {
     let result = await axios.get(`https://redux-api-wine.vercel.app/api/getanime?link=/category/${animeSlug}`);
     setAnimeDetails(result.data);
     result.data[0].anilistResponse !== "NONE" ?
       setColor(result?.data[0]?.anilistResponse?.anilistPoster?.color) :
       setColor("black");
-    setLoading(false)
+    setLoading(false);
   };
-
+  console.log(animeSlug);
+  console.log(animeDetails);
 
   function checkRating(r: any) {
     if (r >= 70 && r <= 100) {
@@ -184,7 +185,7 @@ const AnimeDetailsPage = () => {
                     </Episodes>
                   )}
                 </EpisodeSection>
-              ) : <EpisodeSectionWithImage id={animeDetails[0].anilistResponse.id} animeInfo={animeDetails}/>}
+              ) : <EpisodeSectionWithImage id={animeDetails[0].anilistResponse.id} animeInfo={animeDetails} animeSlug={animeSlug}/>}
 
               {animeDetails[0].anilistResponse !== "NONE" ? (
                 <RelatedAnimePictures idMal={animeDetails[0].anilistResponse.malId} />
