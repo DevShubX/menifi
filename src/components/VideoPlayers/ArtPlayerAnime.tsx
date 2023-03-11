@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components';
 
 const ArtPlayerAnime = ({sourcesLinks}:{sourcesLinks:any}) => {
-    let src = sourcesLinks.sources[0].file;
+    let src = sourcesLinks.sources[0].url;
     const artRef = useRef<any>();
     useEffect(() => {
         const art = new Artplayer({
@@ -32,12 +32,12 @@ const ArtPlayerAnime = ({sourcesLinks}:{sourcesLinks:any}) => {
             moreVideoAttr: {
                 crossOrigin: 'anonymous',
             },
-            quality:[
-                {
-                    html:'Auto',
-                    url : src,
-                },
-            ],
+            quality:sourcesLinks.sources.map((item:any)=>{
+                let container:any = {};
+                container['html'] = item.quality;
+                container['url'] = item.url;
+                return container;
+            }),
             customType: {
                 m3u8: function (video, url) {
                     if (Hls.isSupported()) {
