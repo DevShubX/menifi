@@ -4,7 +4,10 @@ import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components';
 
 const ArtPlayerAnime = ({sourcesLinks}:{sourcesLinks:any}) => {
-    let src = sourcesLinks.sources[0].url;
+    // let src = `https://cors-proxy-kappa.vercel.app/${sourcesLinks.sources[0].url}`;
+    // let src = "https://cors.dekianime.site/https://www040.vipanicdn.net/streamhls/a0e88d9ac8edce4b7000ffd0b053bff9/ep.1.1677814058.360.m3u8";
+    // let src = "https://cors-proxy-kappa.vercel.app/https://www040.vipanicdn.net/streamhls/a0e88d9ac8edce4b7000ffd0b053bff9/ep.1.1677814058.360.m3u8";
+    let src =  `https://cors.dekianime.site/${sourcesLinks.sources[0].url}`;
     const artRef = useRef<any>();
     useEffect(() => {
         const art = new Artplayer({
@@ -35,7 +38,7 @@ const ArtPlayerAnime = ({sourcesLinks}:{sourcesLinks:any}) => {
             quality:sourcesLinks.sources.map((item:any)=>{
                 let container:any = {};
                 container['html'] = item.quality;
-                container['url'] = item.url;
+                container['url'] = `https://cors.dekianime.site/${item.url}`;
                 return container;
             }),
             customType: {
