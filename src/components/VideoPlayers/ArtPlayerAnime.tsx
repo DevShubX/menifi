@@ -38,7 +38,7 @@ const ArtPlayerAnime = ({sourcesLinks}:{sourcesLinks:any}) => {
             quality:sourcesLinks.sources.map((item:any)=>{
                 let container:any = {};
                 container['html'] = item.quality;
-                container['url'] = `https://cors.dekianime.site/${item.url}`;
+                container['url'] = `https://cors.haikei.xyz/${item.url}`;
                 return container;
             }),
             customType: {
