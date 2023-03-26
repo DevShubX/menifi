@@ -7,7 +7,7 @@ const ArtPlayerAnime = ({sourcesLinks}:{sourcesLinks:any}) => {
     // let src = `https://cors-proxy-kappa.vercel.app/${sourcesLinks.sources[0].url}`;
     // let src = "https://cors.dekianime.site/https://www040.vipanicdn.net/streamhls/a0e88d9ac8edce4b7000ffd0b053bff9/ep.1.1677814058.360.m3u8";
     // let src = "https://cors-proxy-kappa.vercel.app/https://www040.vipanicdn.net/streamhls/a0e88d9ac8edce4b7000ffd0b053bff9/ep.1.1677814058.360.m3u8";
-    let src =  `https://cors.dekianime.site/${sourcesLinks.sources[0].url}`;
+    let src =  `https://cors.haikei.xyz/${sourcesLinks.sources[0].url}`;
     const artRef = useRef<any>();
     useEffect(() => {
         const art = new Artplayer({
