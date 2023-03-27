@@ -6,7 +6,7 @@ import styled from 'styled-components';
 const ArtPlayerAnime = ({sourcesLinks}:{sourcesLinks:any}) => {
     let reverseSources = [...sourcesLinks.sources].reverse();
     reverseSources = reverseSources.filter((item)=>item.quality !== 'default');
-    let src =  `https://cors.haikei.xyz/${reverseSources[0].url}`;
+    let src =  `https://cors.menifi.workers.dev/${reverseSources[0].url}`;
     const artRef = useRef<any>();
     useEffect(() => {
         const art = new Artplayer({
@@ -37,7 +37,7 @@ const ArtPlayerAnime = ({sourcesLinks}:{sourcesLinks:any}) => {
             quality:reverseSources.map((item:any)=>{
                 let container:any = {};
                 container['html'] = item.quality;
-                container['url'] = `https://cors.haikei.xyz/${item.url}`;
+                container['url'] = `https://cors.menifi.workers.dev/${item.url}`;
                 return container;
             }),
             customType: {
