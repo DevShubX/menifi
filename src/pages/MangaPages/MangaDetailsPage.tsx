@@ -16,7 +16,7 @@ const MangaDetailsPage = () => {
   }, []);
 
   const getMangaDetails = async () => {
-    let result = await axios.get(`https://api.consumet.org/manga/mangasee123/info?id=${mangaId}`);
+    let result = await axios.get(`https://redux-api-wine.vercel.app/api/manga/mangareader/info?mangaId=${mangaId}`);
     setMangaDetails(result.data);
     setLoading(false);
   }
@@ -70,7 +70,7 @@ const MangaDetailsPage = () => {
               </div>
               <Chapters>
                 {mangaDetails.chapters.map((chapter: any, index: any) => (
-                  <Link to={"/mangas/read/" + chapter.id}>
+                  <Link to={"/mangas/read/" + chapter.id.replace("/ja/","-ja-").replace("/en/","-en-")}>
                     <img src={mangaDetails.image} alt="" />
                     <p>{(chapter.title!==''||undefined||null)?chapter.title: `Chapter ${mangaDetails.chapters.length-index}`}</p>
                   </Link>

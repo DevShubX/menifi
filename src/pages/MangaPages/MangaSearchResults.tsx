@@ -2,7 +2,6 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import MangaDexCover from '../../components/Mangas/MangaDexCover'
 import NavBar from '../../components/NavBars/NavBar'
 import SearchResultsSkeleton from '../../components/Skeletons/SearchResultsSkeleton'
 
@@ -17,7 +16,7 @@ const MangaSearchResults = () => {
 
     const getSearchResults=async()=>{
         setLoading(true);
-        let result = await axios.get(`https://api.consumet.org/manga/mangasee123/${mangaName}`);
+        let result = await axios.get(`https://redux-api-wine.vercel.app/api/manga/mangareader/search?name=${mangaName}`);
         setSearchResult(result.data.results);
         setLoading(false);
     }
@@ -35,7 +34,7 @@ const MangaSearchResults = () => {
                   {searchResults.map((item:any,index:any)=>(
                     <Wrapper to={"/mangas/info/" + item.id}>
                       <div>
-                        {item.image !== "" || undefined || null ? (<img src={item.image} alt="" />): (<img src='https://fomantic-ui.com/images/wireframe/square-image.png'/>)}
+                        {item.image !== "" || undefined || null ? (<img src={`${item.image}`} alt="" />): (<img src='https://fomantic-ui.com/images/wireframe/square-image.png'/>)}
                       </div>
                       <p>{(item.title !== "" || undefined || null) ? item.title : item.altTitles[0] }</p>
                     </Wrapper>
