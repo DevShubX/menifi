@@ -34,7 +34,7 @@ const MangaReadPage = () => {
                     {pictures.map((item:any,index:any)=>(
                       <>
                         <p>{`${item.page+'/'+pictures.length}`}</p>
-                        <img loading='lazy' src={`https://cors.menifi.workers.dev/${item.img}`} alt="" /> 
+                        <img loading='lazy' src={`${item.img}`} alt="" /> 
                       </>
                     ))}
                 </Wrapper>
