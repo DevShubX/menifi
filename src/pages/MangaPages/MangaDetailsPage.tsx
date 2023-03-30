@@ -10,14 +10,29 @@ const MangaDetailsPage = () => {
   let mangaId = useParams().mangaId;
   const [mangaDetails, setMangaDetails] = useState<any>({});
   const [loading, setLoading] = useState(true);
-
+  const [mangaChapters,setMangaChapters] = useState<any>([]);
+  const [pageNumber,setPageNumber] = useState(1);
+  const [moreMangaDetails,setMoreMangaDetails] = useState<any>({});
   useEffect(() => {
     getMangaDetails();
   }, []);
 
+  useEffect(()=>{
+    getAllChapters();
+  },[pageNumber]);
+
+  const getAllChapters=async()=>{
+    let result = await axios.get(`https://api.comick.app/comic/${mangaId}/chapters?lang=en&page=${pageNumber}`);
+    if(result.data.chapters.length <= 0){
+      setPageNumber(1);
+    }
+    setMangaChapters(result.data);
+  }
+
   const getMangaDetails = async () => {
-    let result = await axios.get(`https://redux-api-wine.vercel.app/api/manga/mangareader/info?mangaId=${mangaId}`);
-    setMangaDetails(result.data);
+    let result = await axios.get(`https://redux-api-wine.vercel.app/api/manga/comick/info?mangaId=${mangaId}`);
+    setMangaDetails(result.data.result.mangaInfo);
+    setMoreMangaDetails(result.data.result.moreInfo);
     setLoading(false);
   }
   return (
@@ -35,10 +50,34 @@ const MangaDetailsPage = () => {
                 <h1>
                   {(mangaDetails.title !== ''|| undefined || null) ? mangaDetails.title : mangaDetails.altTitles[0]}
                 </h1>
-                {/* <p>
+                <p>
                   <span>Status: </span>
-                  {mangaDetails.status}
-                </p> */}
+                  {mangaDetails.status ?? "NA"}
+                </p>
+                <p>
+                  <span>Mature Content: </span>
+                  {mangaDetails.matureContent ? "YES" : "NO"}
+                </p>
+                <p>
+                  <span>Rating: </span>
+                  {moreMangaDetails.bayesian_rating?? "NA"}
+                </p>
+                <p>
+                  <span>Released Year: </span>
+                  {moreMangaDetails.year ?? "NA"}
+                </p>
+                <p>
+                  <span>Language: </span>
+                  {moreMangaDetails.iso639_1 ?? "NA"}
+                </p>
+                <p>
+                  <span>Language Name: </span>
+                  {moreMangaDetails.lang_name ??"NA"}
+                </p>
+                <p>
+                  <span>Language Native: </span>
+                  {moreMangaDetails.lang_native ?? "NA"}
+                </p>
                 <p className='Genre'>
                   <span>Genres: </span>
                   {mangaDetails.genres.map((item: any, index: any) => (
@@ -58,7 +97,7 @@ const MangaDetailsPage = () => {
                 </p> */}
                 <p>
                   <span>Total Chapters: </span>
-                  {mangaDetails.chapters.length}
+                  {mangaChapters.total}
                 </p>
               </Content>
             </ContentWrapper>
@@ -69,17 +108,38 @@ const MangaDetailsPage = () => {
                 </h1>
               </div>
               <Chapters>
-                {mangaDetails.chapters.map((chapter: any, index: any) => (
-                  <Link to={"/mangas/read/" + chapter.id.replace("/ja/","-ja-").replace("/en/","-en-")}>
+                {mangaChapters.chapters.map((chapter: any, index: any) => (
+                  <Link to={"/mangas/read/" + chapter.hid}>
                     <img src={mangaDetails.image} alt="" />
-                    <p>{(chapter.title!==''||undefined||null)?chapter.title: `Chapter ${mangaDetails.chapters.length-index}`}</p>
+                    <div>
+                      <p>{(chapter.title!==null)? `Chapter ${chapter.chap} ${chapter.title ?? "NA"}`: `Chapter ${chapter.chap}`}</p>
+                      <p>{chapter.lang.toUpperCase()}</p>
+                      <p>{chapter.group_name}</p>
+                    </div>
                   </Link>
                 ))}
               </Chapters>
             </ChapterWrapper>
+            <div className='button-section'>
+              <button onClick={()=>{
+                if(pageNumber > 0){
+                    setPageNumber(pageNumber-1);
+                }else{
+                  setPageNumber(1);
+                }
+              }}>
+                Previous                
+              </button>
+
+              <button onClick={()=>{
+                setPageNumber(pageNumber+1);
+              }}>
+                Next
+              </button>
+            </div>
           </Parent>
         )}
-        <PopularMangas/>
+        <PopularMangas/> 
       </MainDiv>
     </div>
   )
@@ -87,7 +147,7 @@ const MangaDetailsPage = () => {
 
 const Chapters = styled.div`
   display: grid;
-  max-height: 400px;
+  max-height: 600px;
   overflow-y: scroll;
   grid-template-columns: repeat(auto-fill,400px);
   grid-row-gap: 1rem;
@@ -112,16 +172,36 @@ const Chapters = styled.div`
     margin-right: 1rem;
   }
 
-  @media screen and (max-width:400px){
+  @media screen and (max-width:600px) {
+    max-height: 500px;
+    grid-template-columns: repeat(auto-fill,350px);
     a{
       p{
-        font-size : 1rem;
+        font-size : 0.9rem;
       }
     }
+  }
+
+  
+  @media screen and (max-width:400px){
+    grid-template-columns: repeat(auto-fill,340px);
+    a{
+      p{
+        font-size : 0.9rem;
+      }
+    }
+  }
+
+  @media screen and (max-width:375px){
+    grid-template-columns: repeat(auto-fill,330px);
   }
 `
 
 const ChapterWrapper = styled.div`
+
+  h1{
+    font-family: 'Gilroy-Bold',sans-serif;
+  }
   @media screen and (max-width:400px){
 
     h1{
@@ -152,6 +232,11 @@ const ContentWrapper = styled.div`
   }
 `
 const Content = styled.div`
+
+  .Genre{
+    display: flex;
+    flex-wrap: wrap;
+  }
   h1{
     margin:0;
     font-size : 2.3rem;
@@ -184,7 +269,8 @@ const Content = styled.div`
   }
   @media screen and (max-width:900px){
     .Genre{
-    display : grid;
+    display : flex;
+    flex-wrap: wrap;
     align-items: center;
     }
     h1{
@@ -204,6 +290,21 @@ const Content = styled.div`
 
 const Parent = styled.div`
   margin: 2rem 3rem 2rem 2rem;
+  .button-section{
+    margin: 2rem 0 0 0 ;
+    button{
+      border: none;
+      padding: 0.3rem 0.5rem;
+      background-color: #ff0000c0;
+      color: white;
+      font-size: 1.2rem;
+      border-radius: 0.5rem;
+      font-family: 'Gilroy-Medium',sans-serif;
+    }
+
+    display: flex;
+    justify-content: space-between;
+  }
   @media screen and (max-width:600px){
     margin: 2rem 1rem 2rem 1rem;
   }

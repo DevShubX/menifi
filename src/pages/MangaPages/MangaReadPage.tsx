@@ -7,15 +7,16 @@ import DetailsPageSkeleton from '../../components/Skeletons/DetailsPageSkeleton'
 
 const MangaReadPage = () => {
     let chapterId = useParams().chapterId;
-    chapterId = chapterId?.replace("-ja-","/ja/").replace("-en-","/en/");
     const [pictures,setPictures] = useState<any>([]);
     const [loading,setLoading] = useState(true);
+    const [chapteInfo,setChapterInfo] = useState<any>({});
     useEffect(()=>{
         getMangaPages();
     },[chapterId]);
 
     const getMangaPages=async()=>{
-        let result = await axios.get(`https://redux-api-wine.vercel.app/api/manga/mangareader/read?chapterId=${chapterId}`);
+        let result = await axios.get(`https://redux-api-wine.vercel.app/api/manga/comick/read?chapterId=${chapterId}`);
+        setChapterInfo(result.data.result);
         setPictures(result.data.pages);
         setLoading(false);
     }
@@ -28,13 +29,13 @@ const MangaReadPage = () => {
             {!loading && (
               <div>
                 <Heading>
-                  {chapterId?.replaceAll('-',' ').replaceAll("/"," ")}
+                  {chapteInfo.seoTitle?.replace("Read manga","")}
                 </Heading>
                 <Wrapper>
                     {pictures.map((item:any,index:any)=>(
                       <>
-                        <p>{`${item.page+'/'+pictures.length}`}</p>
-                        <img loading='lazy' src={`${item.img}`} alt="" /> 
+                        <p>{`${item.page+1+'/'+pictures.length}`}</p>
+                        <img loading='lazy' src={`${item.img}`} alt="" crossOrigin='anonymous' /> 
                       </>
                     ))}
                 </Wrapper>

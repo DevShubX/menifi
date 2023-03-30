@@ -16,8 +16,8 @@ const MangaSearchResults = () => {
 
     const getSearchResults=async()=>{
         setLoading(true);
-        let result = await axios.get(`https://redux-api-wine.vercel.app/api/manga/mangareader/search?name=${mangaName}`);
-        setSearchResult(result.data.results);
+        let result = await axios.get(`https://redux-api-wine.vercel.app/api/manga/comick/search?name=${mangaName}`);
+        setSearchResult(result.data.compResults);
         setLoading(false);
     }
   return (
@@ -32,7 +32,7 @@ const MangaSearchResults = () => {
               {!loading && (
                 <CardWrapper>
                   {searchResults.map((item:any,index:any)=>(
-                    <Wrapper to={"/mangas/info/" + item.id}>
+                    <Wrapper to={"/mangas/info/" + item.altId}>
                       <div>
                         {item.image !== "" || undefined || null ? (<img src={`${item.image}`} alt="" />): (<img src='https://fomantic-ui.com/images/wireframe/square-image.png'/>)}
                       </div>
