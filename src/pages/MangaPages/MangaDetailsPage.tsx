@@ -22,7 +22,7 @@ const MangaDetailsPage = () => {
   },[pageNumber]);
 
   const getAllChapters=async()=>{
-    let result = await axios.get(`https://api.comick.app/comic/${mangaId}/chapters?lang=en&page=${pageNumber}`);
+    let result = await axios.get(`https://cors.menifi.workers.dev/https://api.comick.app/comic/${mangaId}/chapters?lang=en&page=${pageNumber}`);
     if(result.data.chapters.length <= 0){
       setPageNumber(1);
     }
