@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Scrollbar } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import HomeCardSkeleton from '../Skeletons/HomeCardSkeleton';
-
+import {AiFillStar} from 'react-icons/ai';
 const TrendingAnimeSlider = () => {
     const [trendingAnime, setTrendingAnime] = useState<any>([]);
     const [loading, setLoading] = useState<any>([]);
@@ -25,7 +25,7 @@ const TrendingAnimeSlider = () => {
                     <h1>
                         Trending Now
                     </h1>
-                    <Link to={"/animes/trending"}>
+                    <Link to={"/animes/trending&page=1"}>
                         View More
                     </Link>
                 </Heading>
@@ -49,7 +49,7 @@ const TrendingAnimeSlider = () => {
                                 spaceBetween: 35,
                             },
                             "@1.50": {
-                                slidesPerView: 5,
+                                slidesPerView: 7,
                                 spaceBetween: 35,
                             },
                             "@2.00": {
@@ -67,6 +67,9 @@ const TrendingAnimeSlider = () => {
                                     <p>
                                         {(item.title.english !== null || undefined || "" ? item.title.english : item.title.romaji !== null || undefined || "" ? item.title.romaji : item.title.userPreferred)}
                                     </p>
+                                    <div className='score'>
+                                       {item.averageScore?? "NA"}
+                                    </div>
                                 </Wrapper>
                             </SwiperSlide>
                         ))}
@@ -86,6 +89,18 @@ const Wrapper = styled.div`
   }
   p{
       font-family: "Gilroy-Medium",sans-serif;
+  }
+  .score{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    background-color: #ff0000;
+    padding: 0.1rem 0.3rem;
+    font-family: 'Gilroy-Bold',sans-serif;
+    border-radius: 0.2rem;
+    align-items: center;
+    justify-content: center;
   }
   @media screen  and (max-width:600px){
       width: 120px;

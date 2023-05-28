@@ -27,6 +27,7 @@ const WatchAnimePage = () => {
 
   const getAnimeSources = async () => {
     let result = await axios.get(`https://redux-api-wine.vercel.app/api/getlinks?link=/${episodeSlug}`);
+    console.log(result);
     setAnimeSources(result.data);
     setLoading(false);
   }

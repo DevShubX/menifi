@@ -73,7 +73,7 @@ const TvOnTheAir = () => {
                                 spaceBetween: 35,
                             },
                             "@1.50": {
-                                slidesPerView: 5,
+                                slidesPerView: 7,
                                 spaceBetween: 35,
                             },
                             "@2.00": {
@@ -138,7 +138,7 @@ const Wrapper = styled.div`
         transform: scale(1.1);
     }
     img{
-        border-radius: 1rem;
+        border-radius: 0.5rem;
         height: 235px;
     }
     p{

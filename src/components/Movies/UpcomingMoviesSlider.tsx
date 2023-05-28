@@ -72,7 +72,7 @@ const UpcomingMoviesSlider = () => {
                                 spaceBetween: 35,
                             },
                             "@1.50": {
-                                slidesPerView: 5,
+                                slidesPerView: 7,
                                 spaceBetween: 35,
                             },
                             "@2.00": {
@@ -131,7 +131,7 @@ const Rating = styled.div`
 const Wrapper = styled.div`
     width: 160px;
     img{
-        border-radius: 1rem;
+        border-radius: 0.5rem;
     }
     p{
         position: relative;

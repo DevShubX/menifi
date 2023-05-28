@@ -49,7 +49,7 @@ const HomeCardSkeleton = () => {
                     height={
                         width <= 600 ? (width <= 400 ? "160px" : "180px") : "220px"
                       }
-                    borderRadius={"1.5rem"}
+                    borderRadius={"0.5rem"}
                     baseColor={"#808080"}
                     highlightColor={"#404040"}
                     />

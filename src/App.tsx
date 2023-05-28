@@ -42,6 +42,11 @@ import PopularTVShowsPage from './pages/TvShowsPages/PopularTVShowsPage';
 import TopRatedTvShowsPage from './pages/TvShowsPages/TopRatedTvShowsPage';
 import TVOnAirPage from './pages/TvShowsPages/TVOnAirPage';
 import TrendingTvShowsPage from './pages/TvShowsPages/TrendingTvShowsPage';
+import TrendingAnimePage from './pages/AnimePages/TrendingAnimePage';
+import PopularAnimePage from './pages/AnimePages/PopularAnimePage';
+import Top100AnimePage from './pages/AnimePages/Top100AnimePage';
+import FavouriteAnimePage from './pages/AnimePages/FavouriteAnimePage';
+import UpcomingAnimePage from './pages/AnimePages/UpcomingAnimePage';
 function App() {
   const { width, height } = useWindowDimension();
   const { openMenu, currentUser, setCurrentUser, activeSong ,isActive} = useStateContext();
@@ -94,6 +99,11 @@ function App() {
           <Route path={"/tvshows/top_rated"} element={currentUser !== null ? <TopRatedTvShowsPage /> : <Navigate to={'/login'} />}/>
           <Route path={"/tvshows/on_the_air"} element={currentUser !== null ? <TVOnAirPage /> : <Navigate to={'/login'} />}/>
           <Route path={"/tvshows/trending_tvshows"} element={currentUser !== null ? <TrendingTvShowsPage /> : <Navigate to={'/login'} />}/>
+          <Route path={"/animes/trending&page=:pageNum"} element={currentUser !== null ? <TrendingAnimePage/> : <Navigate to={"/login"}/>} />
+          <Route path={"/animes/popular&page=:pageNum"} element={currentUser != null ? <PopularAnimePage/> : <Navigate to={"/login"}/>}/>
+          <Route path={"/animes/topanime&page=:pageNum"} element={currentUser != null ? <Top100AnimePage/> : <Navigate to={"/login"}/>}/>
+          <Route path={"/animes/favourite&page=:pageNum"} element={currentUser != null ? <FavouriteAnimePage/> : <Navigate to={"/login"}/>}/>
+          <Route path={"/animes/upcoming&page=:pageNum"} element={currentUser != null ? <UpcomingAnimePage/> : <Navigate to={"/login"}/>}/>
         </Routes>
         <div className='player'>
           {activeSong?.name && isActive && <MusicPlayer />}

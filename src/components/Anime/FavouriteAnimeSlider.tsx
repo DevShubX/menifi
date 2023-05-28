@@ -25,7 +25,7 @@ const FavouriteAnimeSlider = () => {
                     <h1>
                         Favourite Animes
                     </h1>
-                    <Link to={"/animes/favourite"}>
+                    <Link to={"/animes/favourite&page=1"}>
                         View More
                     </Link>
                 </Heading>
@@ -49,7 +49,7 @@ const FavouriteAnimeSlider = () => {
                                 spaceBetween: 35,
                             },
                             "@1.50": {
-                                slidesPerView: 5,
+                                slidesPerView: 7,
                                 spaceBetween: 35,
                             },
                             "@2.00": {
@@ -67,6 +67,9 @@ const FavouriteAnimeSlider = () => {
                                     <p>
                                         {item.title.userPreferred !== undefined ? item.title.userPreferred : item.title.romaji !== undefined ? item.title.romaji : item.title.english}
                                     </p>
+                                    <div className='score'>
+                                       {item.averageScore?? "NA"}
+                                    </div>
                                 </Wrapper>
                             </SwiperSlide>
                         ))}
@@ -88,6 +91,18 @@ const Wrapper = styled.div`
   p{
       font-family: "Gilroy-Medium",sans-serif;
       max-width:160px;
+  }
+  .score{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    background-color: #ff0000;
+    padding: 0.1rem 0.3rem;
+    font-family: 'Gilroy-Bold',sans-serif;
+    border-radius: 0.2rem;
+    align-items: center;
+    justify-content: center;
   }
   @media screen  and (max-width:600px){
       width: 120px;

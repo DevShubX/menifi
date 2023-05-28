@@ -14,16 +14,18 @@ const TvShowsEpisodeCards = ({ tvSeasonID, mediaId, tvDetails }: { tvSeasonID: a
     const [loading, setLoading] = useState(true);
     const [tvshowepisodes, setTvshowepisodes] = useState<any>([]);
     const { currentUser } = useStateContext();
+
     useEffect(() => {
         getTvShowEpisodes();
     }, [tvSeasonID]);
+
+// 100 -> 110
     const getTvShowEpisodes = async () => {
         setLoading(true);
         let episodes = await axios.get(`https://menifi-api.vercel.app/api/tv/episodes/${tvSeasonID}`);
         setTvshowepisodes(episodes.data);
         setLoading(false);
     }
-
 
     const updateContinueWatching = (userId: any, newContinueWatching: any, tvstring: any, StreamingLink: any) => {
         const db = database;

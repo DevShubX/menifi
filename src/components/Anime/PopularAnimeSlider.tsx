@@ -24,7 +24,7 @@ const PopularAnimeSlider = () => {
           <h1>
             All Time Popular
           </h1>
-          <Link to={"/animes/popular"}>
+          <Link to={"/animes/popular&page=1"}>
             View More
           </Link>
         </Heading>
@@ -48,7 +48,7 @@ const PopularAnimeSlider = () => {
                 spaceBetween: 35,
               },
               "@1.50": {
-                slidesPerView: 5,
+                slidesPerView: 7,
                 spaceBetween: 35,
               },
               "@2.00": {
@@ -66,6 +66,9 @@ const PopularAnimeSlider = () => {
                   <p>
                     {item.title.userPreferred !== undefined ? item.title.userPreferred : item.title.romaji !== undefined ? item.title.romaji : item.title.english}
                   </p>
+                  <div className='score'>
+                    {item.averageScore?? "NA"}
+                    </div>
                 </Wrapper>
               </SwiperSlide>
             ))}
@@ -85,6 +88,18 @@ const Wrapper = styled.div`
   }
   p{
       font-family: "Gilroy-Medium",sans-serif;
+  }
+  .score{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    background-color: #ff0000;
+    padding: 0.1rem 0.3rem;
+    font-family: 'Gilroy-Bold',sans-serif;
+    border-radius: 0.2rem;
+    align-items: center;
+    justify-content: center;
   }
   @media screen  and (max-width:600px){
       width: 120px;

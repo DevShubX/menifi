@@ -32,7 +32,7 @@ const MangaSearchResults = () => {
               {!loading && (
                 <CardWrapper>
                   {searchResults.map((item:any,index:any)=>(
-                    <Wrapper to={"/mangas/info/" + item.altId}>
+                    <Wrapper to={"/mangas/info/" + item.hid}>
                       <div>
                         {item.image !== "" || undefined || null ? (<img src={`${item.image}`} alt="" />): (<img src='https://fomantic-ui.com/images/wireframe/square-image.png'/>)}
                       </div>

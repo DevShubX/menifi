@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import HomeCardSkeleton from '../Skeletons/HomeCardSkeleton';
-import { Navigation, Mousewheel, Pagination } from 'swiper';
+import { Navigation, Mousewheel, Pagination, Scrollbar } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
@@ -28,7 +28,7 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
     }, [id]);
 
     const getAnimeData = async () => {
-        let result = await axios.get(`https://api.consumet.org/meta/anilist/info/${id}`);
+        let result = await axios.get(`https://redux-api-wine.vercel.app/api/info/anilist?id=${id}`);
         setAnimeDetails(result.data)
         setColor(result.data.color);
         setAnimeEpisodes(result.data.episodes);
@@ -97,7 +97,8 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
                 {loading && (<HomeCardSkeleton />)}
                 {!loading && (width > 600) && (
                     <Swiper /// this breakpointer works like 320>=\
-                        modules={[Navigation, Mousewheel]}
+                        modules={[Navigation, Mousewheel,Scrollbar]}
+                        scrollbar={{draggable:true}}
                         mousewheel={true}
                         breakpoints={
                             {
@@ -139,10 +140,11 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
                     >
                         {animeEpisodes.map((episode: any, index: any) => (
                             <SwiperSlide>
-                                <Wrapper to={`/animes/watch&episodeId=${episode.id}&animeName=${animeSlug}&id=${id}`} onClick={()=>updateContinueWatching(currentUser.uid,animeInfo[0].anilistResponse,id,
+                                <Wrapper to={`/animes/watch&episodeId=${episode.id}&animeName=${animeSlug}&id=${id}`} 
+                                onClick={()=>updateContinueWatching(currentUser.uid,animeInfo[0].anilistResponse,id,
                                     `/animes/watch&episodeId=${episode.id}&animeName=${animeSlug}&id=${id}`)}>
-                                    <img src={`https://images.weserv.nl/?url=${episode.image}`} alt="" />
-                                    <p style={{ color: color !== null ? color : "white" }}>Ep {index + 1}: {episode.title}</p>
+                                    <img src={`${episode.image}` ?? `${animeDetails.cover}`} alt="" />
+                                    <p style={{ color: color ?? "white" }}>Ep {episode.number}: {episode.title ?? "title : NA"}</p>
                                 </Wrapper>
                             </SwiperSlide>
 
@@ -156,10 +158,11 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
                         <Content>
                             <CardWrapper>
                                 {animeEpisodes.slice(0, visible).map((episode: any, index: any) => (
-                                    <Link to={`/animes/watch&episodeId=${episode.id}&animeName=${animeSlug}&id=${id}`} onClick={()=>updateContinueWatching(currentUser.uid,animeInfo[0].anilistResponse,id,
-                                    `/animes/watch&episodeId=${episode.id}&animeName=${animeSlug}&id=${id}`)}>
-                                        <img src={`https://images.weserv.nl/?url=${episode.image}`} alt="" />
-                                        <p style={{ color: color !== null ? color : "white" }}>Ep {index + 1}: {episode.title}</p>
+                                    <Link  to={`/animes/watch&episodeId=${episode.id}&animeName=${animeSlug}&id=${id}`} onClick={()=>updateContinueWatching(currentUser.uid,animeInfo[0].anilistResponse,id,
+                                        `/animes/watch&episodeId=${episode.id}&animeName=${animeSlug}&id=${id}`)}>
+                                        {/* <img src={`https://images.weserv.nl/?url=${episode.image}`} alt="" /> */}
+                                        <img src={`${episode.image}` ?? `${animeDetails.cover}`} alt="" />
+                                        <p style={{ color: color !== null ? color : "white" }}>Ep {index + 1}: {episode.title ?? "title : NA"}</p>
                                     </Link>
                                 ))}
                             </CardWrapper>
@@ -298,6 +301,13 @@ const MainDiv = styled.div`
     margin-right: 2rem;
     .swiper-pagination{
         margin-top: 3rem;
+    }
+    .swiper-scrollbar-drag{
+        background-color: #837f7f;
+    }
+    .swiper-scrollbar-horizontal{
+        background-color: #333232;
+        height: 7px;
     }
     @media screen and (max-width:600px) {
         margin: 0 0rem 3rem 0rem;

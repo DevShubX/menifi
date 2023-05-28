@@ -25,7 +25,7 @@ const UpcomingAnime = () => {
                     <h1>
                         Upcoming Anime
                     </h1>
-                    <Link to={"/animes/upcoming"}>
+                    <Link to={"/animes/upcoming&page=1"}>
                         View More
                     </Link>
                 </Heading>
@@ -49,7 +49,7 @@ const UpcomingAnime = () => {
                                 spaceBetween: 35,
                             },
                             "@1.50": {
-                                slidesPerView: 5,
+                                slidesPerView: 7,
                                 spaceBetween: 35,
                             },
                             "@2.00": {
@@ -61,11 +61,12 @@ const UpcomingAnime = () => {
                         {upcomingAnime.map((item: any, index: any) => (item.images.webp.image_url !== null || undefined || "") && (
                             <SwiperSlide key={item.id}>
                                 <Wrapper>
-                                    <Link to={"/animes/search/" + (item.title !== undefined || null || "") ? item.title : (item.title_english !== undefined || null ||  "" )? item.title_english : item.title_japanese}>
-                                        <img src={item.images.webp.image_url} alt="" />
+                                    <Link to={`/animes/search/${item.title ?? item.title_english ?? item.title_japanese}`
+                                }>
+                                        <img src={item.images.webp.image_url ?? item.images.jpg.image_url} alt="" />
                                     </Link>
                                     <p>
-                                        {(item.title !== undefined || null || "") ? item.title : (item.title_english !== undefined || null ||  "" )? item.title_english : item.title_japanese}
+                                        {item.title ?? item.title_english ?? item.title_japanese}
                                     </p>
                                 </Wrapper>
                             </SwiperSlide>

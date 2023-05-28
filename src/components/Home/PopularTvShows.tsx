@@ -87,6 +87,7 @@ const Heading = styled.div`
     justify-content: space-between;
     margin-right: 3rem;
     align-items: center;
+    font-family:'Gilroy-Bold',sans-serif;
     a{
         color:#ebe9e9;
         text-decoration: none;

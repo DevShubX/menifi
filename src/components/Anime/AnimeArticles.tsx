@@ -15,7 +15,7 @@ const AnimeArticles = () => {
   }, []);
 
   const getAnimeReviews = async () => {
-    let result = await axios.get(`https://redux-api-wine.vercel.app/api/anime-reviews`);
+    let result = await axios.get(`https://redux-api-wine.vercel.app/api/reviews?type=ANIME`);
     setReviews(result.data.data.Page.reviews);
     setLoading(false);
   }
@@ -82,13 +82,14 @@ const AnimeArticles = () => {
 }
 const CardWrapper = styled.div`
   display: flex;
-  background-color: #3a3a3a;
+  background-color: #3a3a3a47;
   margin-right: 3rem;
   margin-bottom:3rem;
   border-radius:1rem;
   padding: 0 3rem 0  0;
   .summary{
     max-width: 1086px;
+    color:#cccaca;
   }
   .image-div{
     margin: 1.5rem 0 1.5rem 1.5rem; 

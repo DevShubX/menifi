@@ -81,7 +81,7 @@ const ContinueWatchingMovies = () => {
                                         spaceBetween: 40,
                                     },
                                     "@1.50": {
-                                        slidesPerView: 5,
+                                        slidesPerView: 7,
                                         spaceBetween: 35,
                                     },
                                     "@2.00": {

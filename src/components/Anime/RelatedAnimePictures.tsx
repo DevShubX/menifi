@@ -46,11 +46,11 @@ const RelatedAnimePictures = ({ idMal }: { idMal: any }) => {
                                 spaceBetween: 35,
                             },
                             "@1.50": {
-                                slidesPerView: 5,
+                                slidesPerView: 7,
                                 spaceBetween: 35,
                             },
                             "@2.00": {
-                                slidesPerView: 6,
+                                slidesPerView: 7,
                                 spaceBetween: 35,
                             }
                         }}
