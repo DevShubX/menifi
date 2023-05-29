@@ -36,8 +36,6 @@ const AnimeDetailsPage = () => {
       setColor("black");
     setLoading(false);
   };
-
-
   function checkRating(r: any) {
     if (r >= 70 && r <= 100) {
       return "#45f542";

@@ -31,7 +31,11 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
         let result = await axios.get(`https://redux-api-wine.vercel.app/api/info/anilist?id=${id}`);
         setAnimeDetails(result.data)
         setColor(result.data.color);
-        setAnimeEpisodes(result.data.episodes);
+        if(!result.data.episodes.length){
+            setAnimeEpisodes(animeInfo[0].gogoResponse.episodes);
+        }else{
+            setAnimeEpisodes(result.data.episodes);
+        }
         setLoading(false);
     }
     const updateContinueWatching = (userId: any, newContinueWatching: any, animeString: any, StreamingLink: any) => {
@@ -140,11 +144,14 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
                     >
                         {animeEpisodes.map((episode: any, index: any) => (
                             <SwiperSlide>
-                                <Wrapper to={`/animes/watch&episodeId=${episode.id}&animeName=${animeSlug}&id=${id}`} 
+                                <Wrapper to={`/animes/watch&episodeId=${(animeInfo[0].gogoResponse.episodes[index] ?? animeInfo[0].anilistResponse.episodes[index])?.replace("/","")}&animeName=${animeSlug}&id=${id}`} 
                                 onClick={()=>updateContinueWatching(currentUser.uid,animeInfo[0].anilistResponse,id,
-                                    `/animes/watch&episodeId=${episode.id}&animeName=${animeSlug}&id=${id}`)}>
-                                    <img src={`${episode.image}` ?? `${animeDetails.cover}`} alt="" />
-                                    <p style={{ color: color ?? "white" }}>Ep {episode.number}: {episode.title ?? "title : NA"}</p>
+                                    `/animes/watch&episodeId=${(animeInfo[0].gogoResponse.episodes[index] ?? animeInfo[0].anilistResponse.episodes[index])?.replace("/","")}&animeName=${animeSlug}&id=${id}`)}>
+                                    <img src={`${episode.image ?? animeDetails.coverImage}`} alt="" />
+                                    <p style={{ color: color ?? "white" }}>Ep {episode.number ?? animeInfo[0].gogoResponse.episodes[index].split("-").reverse()[0]}: {episode.title ?? "NA"}</p>
+                                    <div>
+                                        {animeInfo[0].gogoResponse.title.toLowerCase().includes("dub") ? "Dub" : "Sub"}
+                                    </div>
                                 </Wrapper>
                             </SwiperSlide>
 
@@ -158,11 +165,15 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
                         <Content>
                             <CardWrapper>
                                 {animeEpisodes.slice(0, visible).map((episode: any, index: any) => (
-                                    <Link  to={`/animes/watch&episodeId=${episode.id}&animeName=${animeSlug}&id=${id}`} onClick={()=>updateContinueWatching(currentUser.uid,animeInfo[0].anilistResponse,id,
-                                        `/animes/watch&episodeId=${episode.id}&animeName=${animeSlug}&id=${id}`)}>
+                                    <Link  to={`/animes/watch&episodeId=${(animeInfo[0].gogoResponse.episodes[index] ?? animeInfo[0].anilistResponse.episodes[index])?.replace("/","")}&animeName=${animeSlug}&id=${id}`} 
+                                    onClick={()=>updateContinueWatching(currentUser.uid,animeInfo[0].anilistResponse,id,
+                                        `/animes/watch&episodeId=${(animeInfo[0].gogoResponse.episodes[index] ?? animeInfo[0].anilistResponse.episodes[index])?.replace("/","")}&animeName=${animeSlug}&id=${id}`)}>
                                         {/* <img src={`https://images.weserv.nl/?url=${episode.image}`} alt="" /> */}
-                                        <img src={`${episode.image}` ?? `${animeDetails.cover}`} alt="" />
-                                        <p style={{ color: color !== null ? color : "white" }}>Ep {index + 1}: {episode.title ?? "title : NA"}</p>
+                                        <img src={`${episode.image ?? animeDetails.coverImage}`} alt="" />
+                                        <p style={{ color: color !== null ? color : "white" }}>Ep {episode.number ?? animeInfo[0].gogoResponse.episodes[index].split("-").reverse()[0]}: {episode.title ?? "NA"}</p>
+                                        <div>
+                                            {animeInfo[0].gogoResponse.title.toLowerCase().includes("dub") ? "Dub" : "Sub"}
+                                        </div>
                                     </Link>
                                 ))}
                             </CardWrapper>
@@ -214,6 +225,18 @@ const CardWrapper = styled.div`
     justify-content: space-around;
     a{
         text-decoration: none;
+        position: relative;
+        div{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #ffffffe1;
+            padding: 0.1rem 0.1rem;
+            background-color: #ff0000ae;
+            font-family: 'Gilroy-Bold',sans-serif;
+            border-radius: 4px;
+
+        }
     }
     p{
         max-width: 160px;
@@ -244,7 +267,7 @@ const CardWrapper = styled.div`
 `
 const Wrapper = styled(Link)`
     text-decoration: none;
-    position: relative;
+    /* position: relative; */
     width: 300px;
     p{
         max-width: 300px;
@@ -257,7 +280,16 @@ const Wrapper = styled(Link)`
         object-fit: cover;
         border-radius: 0.5rem;
     }
-
+    div{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: #ffffffe1;
+        padding: 0.2rem 0.2rem;
+        background-color: #ff0000ae;
+        font-family: 'Gilroy-Bold',sans-serif;
+        border-radius: 4px;
+    }
     @media screen and (max-width:900px){
         width: 180px;
         img{
