@@ -12,6 +12,7 @@ const NavBar = ({ placeHolder, path }: { placeHolder: any, path: any }) => {
   const { currentUser, setCurrentUser } = useStateContext();
 
   const navigate = useNavigate();
+  
   const searchEnter = () => {
     if (searchText !== "") {
       navigate(`${path}` + searchText);

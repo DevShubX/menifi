@@ -28,15 +28,24 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
     }, [id]);
 
     const getAnimeData = async () => {
-        let result = await axios.get(`https://redux-api-wine.vercel.app/api/info/anilist?id=${id}`);
-        setAnimeDetails(result.data)
-        setColor(result.data.color);
-        if(!result.data.episodes.length){
+        console.log(animeInfo);
+        try{
+            let result = await axios.get(`https://redux-api-wine.vercel.app/api/info/anilist?id=${id}`);
+            if(result.status === 200){
+                setAnimeEpisodes(result.data.episodes);
+                setAnimeDetails(result.data);
+                setColor(result.data.color);
+            }else{
+                console.log("API return status code",result.status);
+            }
+        }catch(err){
+            console.log(err);
             setAnimeEpisodes(animeInfo[0].gogoResponse.episodes);
-        }else{
-            setAnimeEpisodes(result.data.episodes);
         }
-        setLoading(false);
+        
+       setLoading(false);
+       
+          
     }
     const updateContinueWatching = (userId: any, newContinueWatching: any, animeString: any, StreamingLink: any) => {
         const db = database;
@@ -147,8 +156,8 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
                                 <Wrapper to={`/animes/watch&episodeId=${(animeInfo[0].gogoResponse.episodes[index] ?? animeInfo[0].anilistResponse.episodes[index])?.replace("/","")}&animeName=${animeSlug}&id=${id}`} 
                                 onClick={()=>updateContinueWatching(currentUser.uid,animeInfo[0].anilistResponse,id,
                                     `/animes/watch&episodeId=${(animeInfo[0].gogoResponse.episodes[index] ?? animeInfo[0].anilistResponse.episodes[index])?.replace("/","")}&animeName=${animeSlug}&id=${id}`)}>
-                                    <img src={`${episode.image ?? animeDetails.coverImage}`} alt="" />
-                                    <p style={{ color: color ?? "white" }}>Ep {episode.number ?? animeInfo[0].gogoResponse.episodes[index].split("-").reverse()[0]}: {episode.title ?? "NA"}</p>
+                                    <img src={`${episode.image ?? animeInfo[0].anilistResponse.anilistPoster.large}`} alt="" />
+                                    <p style={{ color: color !== "" ? color : "white" }}>Ep {episode.number ?? animeInfo[0].gogoResponse.episodes[index].split("-").reverse()[0]}: {episode.title ?? "NA"}</p>
                                     <div>
                                         {animeInfo[0].gogoResponse.title.toLowerCase().includes("dub") ? "Dub" : "Sub"}
                                     </div>
@@ -169,8 +178,8 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
                                     onClick={()=>updateContinueWatching(currentUser.uid,animeInfo[0].anilistResponse,id,
                                         `/animes/watch&episodeId=${(animeInfo[0].gogoResponse.episodes[index] ?? animeInfo[0].anilistResponse.episodes[index])?.replace("/","")}&animeName=${animeSlug}&id=${id}`)}>
                                         {/* <img src={`https://images.weserv.nl/?url=${episode.image}`} alt="" /> */}
-                                        <img src={`${episode.image ?? animeDetails.coverImage}`} alt="" />
-                                        <p style={{ color: color !== null ? color : "white" }}>Ep {episode.number ?? animeInfo[0].gogoResponse.episodes[index].split("-").reverse()[0]}: {episode.title ?? "NA"}</p>
+                                        <img src={`${episode.image ?? animeInfo[0].anilistResponse.anilistPoster.large}`} alt="" />
+                                        <p style={{ color: color !== "" ? color : "white" }}>Ep {episode.number ?? animeInfo[0].gogoResponse.episodes[index].split("-").reverse()[0]}: {episode.title ?? "NA"}</p>
                                         <div>
                                             {animeInfo[0].gogoResponse.title.toLowerCase().includes("dub") ? "Dub" : "Sub"}
                                         </div>
