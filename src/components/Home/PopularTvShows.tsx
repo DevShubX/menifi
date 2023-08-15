@@ -89,8 +89,9 @@ const Heading = styled.div`
     align-items: center;
     font-family:'Gilroy-Bold',sans-serif;
     a{
-        color:#ebe9e9;
+        color: #ebe9e9;
         text-decoration: none;
+        font-family:'Gilroy-Medium',sans-serif;
     }
     h1{
         font-size: 2.3rem;
@@ -115,9 +116,10 @@ const Heading = styled.div`
 const Wrapper = styled.div`
     width:160px;
     img{
-        border-radius : 1.5rem;
+        width: 154px;
+        height: 231px;
+        border-radius : 0.5rem;
         object-fit: cover;
-        height: 235px;
     }
     p{
         font-weight: 500;
@@ -134,6 +136,7 @@ const Wrapper = styled.div`
         width : 100px;
         img{
             width : 100px;
+            height: 150px;
         }
     }
 `

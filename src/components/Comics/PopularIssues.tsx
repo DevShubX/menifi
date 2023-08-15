@@ -88,7 +88,7 @@ const Wrapper = styled.div`
     width:154px;
     height: 250px;
     object-fit: cover;
-    border-radius: 1.5rem;
+    border-radius: 0.5rem;
   }
   p{
     font-weight: 500;
@@ -119,10 +119,12 @@ const Heading = styled.div`
   a{
     text-decoration: none;
     color: #ebe9e9;
+    font-family: 'Gilroy-Medium',sans-serif;
   }
   h1{
     font-size:2.3rem;
     color:#ebe9e9;
+    font-family:'Gilroy-Bold',sans-serif;
   }
   @media screen and (max-widht:900px){
     margin-right:1rem;

@@ -198,5 +198,8 @@ const Container = styled.div`
             height: 330px;
         }  
     }
+    @media screen and (max-width:400px){
+        margin: 2rem 1rem 2rem 1rem;
+    }
 `
 export default Carousel

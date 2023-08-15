@@ -18,6 +18,7 @@ const WatchMoviesOnline = () => {
   let mediaId_menifi = useParams().mediaId?.replace("movie+","");
   const [movieDetail, setMovieDetails] = useState<any>({});
   const [movieSources, setMovieSources] = useState<any>({});
+  const [movieReferer,setMovieReferer] = useState<any>("");
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     getMovieStreamingLinks();
@@ -30,6 +31,7 @@ const WatchMoviesOnline = () => {
     const links = await axios.get(`https://menifi-api.vercel.app/api/links/sources/?episodeId=${episodeId}&mediaId=${mediaId}`);
     let menifi_data = await axios.get(`https://menifi-api.vercel.app/api/info/flixhq/movie/${mediaId_menifi}`);
     setMovieDetails(menifi_data.data);
+    setMovieReferer(links.data.headers.Referer);
     setMovieSources(links.data.sources);
     setLoading(false)
   }
@@ -65,12 +67,14 @@ const WatchMoviesOnline = () => {
                   :(<div className='media-not-found'>
                     Media Not Found... Try again Sometime Later
                     </div>)} */}
-                 {movieSources !== undefined || null || "" ? (<ArtPlayerMovie
+                 {/* {movieSources !== undefined || null || "" ? (
+                 <ArtPlayerMovie
                   sourceslinks={movieSources}
                   />)
                   :(<div className='media-not-found'>
                     Media Not Found... Try again Sometime Later
-                    </div>)}
+                    </div>)} */}
+                  <iframe src={movieReferer} allowFullScreen></iframe>
               </VideoPlayerWrapper>
               <div className='info'>
                 <h1>
@@ -130,7 +134,7 @@ const WatchMoviesOnline = () => {
 }
 const VideoPlayerWrapper = styled.div`
   /* padding: 2rem 2rem; */
-  margin:2rem 2rem 6rem 2rem;
+  margin:2rem 2rem 2rem 2rem;
   .media-not-found{
     background-color: #141414;
     height: 300px;
@@ -141,8 +145,16 @@ const VideoPlayerWrapper = styled.div`
       height: 200px;
     }
   }
+  iframe{
+    width: 100%;
+    height: 700px;
+    border: none;
+  }
   @media screen and (max-width:900px){
     margin : 1rem 1rem 0 1rem;
+    iframe{
+      height: 300px;
+    }
   }
 `
 const Parent = styled.div`
@@ -163,8 +175,14 @@ const Parent = styled.div`
   }
   .info{
     margin-left:2rem;
+    h1{
+      font-family: 'Gilroy-Bold',sans-serif;
+    }
     @media screen and (max-width:900px){
       margin-right:1rem;
+      h1{
+        font-size: 1.5rem;
+      }
     }
   }
   @media screen and (max-width:900x){

@@ -21,6 +21,7 @@ const WatchTvShowPage = () => {
   const [tvseasonId, setTvSeasonId] = useState(null);
   const [tvid, settvid] = useState(mediaId?.split("-")[mediaId.split("-").length - 1]);
   const [tvshowsDetails,setTvshowsDetails] = useState<any>({});
+  const [tvshowHref,setTvShowHref] = useState<any>("");
   useEffect(() => {
     getSourcesTvshow();
   }, [episodeId]);
@@ -33,7 +34,8 @@ const WatchTvShowPage = () => {
     getTvshowsDetails();
   },[menifi_id]);
   const getSourcesTvshow = async () => {
-    let sources = await axios.get(`https://menifi-api.vercel.app/api/links/sources/?episodeId=${episodeId}&mediaId=${mediaId}`)
+    let sources = await axios.get(`https://menifi-api.vercel.app/api/links/sources/?episodeId=${episodeId}&mediaId=${mediaId}`);
+    setTvShowHref(sources.data.headers.Referer);
     setTvShowSources(sources.data.sources);
     setLoading(false);
   }
@@ -61,10 +63,11 @@ const WatchTvShowPage = () => {
                 : (<div className='media-not-found'>
                   Media Not Found... Try again Sometime Later
                 </div>)} */}
-                {tvshowsources?.sources !== undefined || null || "" && tvshowsources !== undefined? (<ArtPlayerMovie sourceslinks={tvshowsources} />)
+                {/* {tvshowsources?.sources !== undefined || null || "" && tvshowsources !== undefined? (<ArtPlayerMovie sourceslinks={tvshowsources} />)
                 : (<div className='media-not-found'>
                   Media Not Found... Try again Sometime Later
-                </div>)}
+                </div>)} */}
+                <iframe src={tvshowHref} allowFullScreen></iframe>
             </VideoPlayerWrapper>
             <SeasonDiv>
               <ImMenu3 className="icon" />
@@ -105,7 +108,7 @@ const SeasonDiv = styled.div`
   background-color:#000000;
   border-radius:0.5rem;
   padding : 0 1rem;
-  width: 170px;
+  width: 180px;
   border : 1px solid #0e3b9c;
   filter: drop-shadow(0px 0px 10px rgba(0,0,0,0.5));
   .icon{
@@ -140,7 +143,7 @@ const SeasonDiv = styled.div`
 
 
 const VideoPlayerWrapper = styled.div`
-  margin:2rem 2rem 6rem 2rem;
+  margin:2rem 2rem 2rem 2rem;
   .media-not-found{
     background-color: #141414;
     height: 300px;
@@ -151,8 +154,16 @@ const VideoPlayerWrapper = styled.div`
       height: 200px;
     }
   }
+  iframe{
+    width: 100%;
+    height: 700px;
+    border: none;
+  }
   @media screen and (max-width:900px){
     margin : 1rem 1rem 0 1rem;
+    iframe{
+      height: 300px;
+    }
   }
 `
 const Parent = styled.div`

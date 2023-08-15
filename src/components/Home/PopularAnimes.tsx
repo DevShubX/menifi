@@ -84,7 +84,8 @@ const Wrapper = styled.div`
     width: 160px;
     img{
         width: 154px;
-        border-radius: 1.5rem;
+        height: 231px;
+        border-radius: 0.5rem;
         object-fit: cover;
     }
     p{
@@ -95,12 +96,14 @@ const Wrapper = styled.div`
         width: 120px;
         img{
             width: 120px;
+            height: 180px;
         }
     }
     @media screen and (max-width:400px){
         width:100px;
         img{
             width:100px;
+            height: 150px;
         }
     }
 `
@@ -113,6 +116,7 @@ const Heading = styled.div`
     a{
         color: #ebe9e9;
         text-decoration: none;
+        font-family:'Gilroy-Medium',sans-serif;
     }
     h1{
         font-size:2.3rem;

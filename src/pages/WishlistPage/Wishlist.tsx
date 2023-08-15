@@ -63,7 +63,7 @@ const Wrapper = styled(Link)`
     width: 160px;
     height: 235px;
     object-fit: cover;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
   }
   p{
     color: #ffffff;

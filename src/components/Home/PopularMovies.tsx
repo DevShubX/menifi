@@ -96,6 +96,7 @@ const Heading = styled.div`
   a{
     color: #ebe9e9;
     text-decoration: none;
+    font-family:'Gilroy-Medium',sans-serif;
   }
   h1{
     font-size: 2.3rem;
@@ -120,9 +121,11 @@ const MainDiv = styled.div`
 `
 
 const Wrapper = styled.div`
-  width: 160px ;
+  width: 160px;
   img{
-    border-radius:1.5rem;
+    width: 154px;
+    height: 231px;
+    border-radius:0.5rem;
     object-fit: cover;
   }
   p{
@@ -133,6 +136,7 @@ const Wrapper = styled.div`
     width: 120px;
     img{
       width:120px;
+      height: 180px;
     }
   }
   @media screen and (max-width:400px) {
@@ -140,6 +144,7 @@ const Wrapper = styled.div`
     width:100px;
     img{
       width: 100px;
+      height: 150px;
     }
   }
 `
