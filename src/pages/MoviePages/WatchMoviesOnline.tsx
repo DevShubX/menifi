@@ -74,7 +74,7 @@ const WatchMoviesOnline = () => {
                   :(<div className='media-not-found'>
                     Media Not Found... Try again Sometime Later
                     </div>)} */}
-                  <iframe src={`https://cors.menifi.workers.dev/${movieReferer}`} allowFullScreen></iframe>
+                  <iframe src={movieReferer} allowFullScreen></iframe>
               </VideoPlayerWrapper>
               <div className='info'>
                 <h1>
