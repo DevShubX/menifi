@@ -228,7 +228,6 @@ const ImageContainer = styled.div`
 
 const Container = styled.div`
     border: 1px solid #2c2c2c;
-    
     color: white;
     display: flex;
     height: 100vh;

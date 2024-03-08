@@ -30,6 +30,7 @@ const WatchMoviesOnline = () => {
     window.scroll(0, 0);
     const links = await axios.get(`https://menifi-api.vercel.app/api/links/sources/?episodeId=${episodeId}&mediaId=${mediaId}`);
     let menifi_data = await axios.get(`https://menifi-api.vercel.app/api/info/flixhq/movie/${mediaId_menifi}`);
+    console.log(links);
     setMovieDetails(menifi_data.data);
     setMovieReferer(links.data.headers.Referer);
     setMovieSources(links.data.sources);
@@ -67,14 +68,14 @@ const WatchMoviesOnline = () => {
                   :(<div className='media-not-found'>
                     Media Not Found... Try again Sometime Later
                     </div>)} */}
-                 {/* {movieSources !== undefined || null || "" ? (
+                 {movieSources !== undefined || null || "" ? (
                  <ArtPlayerMovie
                   sourceslinks={movieSources}
                   />)
                   :(<div className='media-not-found'>
                     Media Not Found... Try again Sometime Later
-                    </div>)} */}
-                  <iframe src={movieReferer} allowFullScreen referrerPolicy='origin-when-cross-origin'></iframe>
+                    </div>)}
+                  {/* <iframe src={movieReferer} allowFullScreen referrerPolicy='origin-when-cross-origin'></iframe> */}
               </VideoPlayerWrapper>
               <div className='info'>
                 <h1>
