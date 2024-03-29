@@ -12,33 +12,51 @@ import AnimeVideoPlayer from '../../components/VideoPlayers/AnimeVideoPlayer'
 import ArtPlayerAnime from '../../components/VideoPlayers/ArtPlayerAnime'
 import { useStateContext } from '../../GlobalContext/ContextProvider'
 import useWindowDimension from '../../hooks/useWindowDimension'
+import { kitsuApiUrl } from '../../constants/url'
 const WatchAnimePage = () => {
   let episodeSlug = useParams().episodeSlug;
   let animeId = useParams().animeId;
   let animeSlug = useParams().animeSlug;
+  let animeKitsuId = useParams().animeKitsuId;
   const [animeSources, setAnimeSources] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const { width, height } = useWindowDimension();
   const [animeDetails, setAnimeDetails] = useState<any>([]);
-  const [episodeId,setEpisodeId] = useState(episodeSlug?.split("-")[episodeSlug?.split("-").length -1]);
+  const [episodeId,setEpisodeId] = useState(episodeSlug?.split("-").reverse()[0]);
+  const [episodeDetails,setEpisodeDetails] = useState<any>();
   useEffect(() => {
     getAnimeSources();
   }, [episodeSlug]);
 
   const getAnimeSources = async () => {
     let result = await axios.get(`https://redux-api-wine.vercel.app/api/getlinks?link=/${episodeSlug}`);
-    console.log(result);
     setAnimeSources(result.data);
     setLoading(false);
   }
   useEffect(() => {
     getAnimeDetails();
+    getKitsuEpisodeDetails();
   }, []);
   
   const getAnimeDetails = async () => {
     let result = await axios.get(`https://redux-api-wine.vercel.app/api/getanime?link=/category/${animeSlug}`);
     setAnimeDetails(result.data);
   }
+
+  const getKitsuEpisodeDetails = async ()=>{
+    let result = await axios.get(`${kitsuApiUrl}/${animeKitsuId}`);
+    console.log(result.data.data);
+    setEpisodeDetails(result.data.data);
+    
+  }
+
+  const formatDate = (dateString:string) => {
+    const options:Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' };
+    const date = new Date(dateString);
+    return date.toLocaleString('en-US', options);
+  };
+
+
   return (
     <div>
       <MainDiv>
@@ -75,6 +93,31 @@ const WatchAnimePage = () => {
                 </div>
               </div>
             )}
+            {episodeDetails && (
+              <EpisodeDescription>
+                <div className='box1'>
+                  <div>
+                    <img src={episodeDetails?.attributes?.thumbnail?.original} alt="episode image" />
+                  </div>
+                  <div>
+                    <p className='episode-number'>Episode {episodeDetails?.attributes?.number}</p>
+                    <p className='episode-title'>{episodeDetails?.attributes?.titles?.en_us ?? episodeDetails?.attributes?.titles?.en ?? ""}</p>
+                    <p className='episode-duration'>{episodeDetails?.attributes?.length} minutes</p>
+                    <p className='episode-airdate'>
+                      Aired: {formatDate(episodeDetails?.attributes?.airdate)}</p>
+                  </div>
+                </div>
+                <div className='box2'>
+                  <p className='overview-heading'>
+                    Overview
+                  </p>
+                  <p className='episode-overiew'>
+                    {episodeDetails?.attributes?.synopsis ?? episodeDetails?.attributes?.description}
+                  </p>
+                </div>
+            </EpisodeDescription>
+            )}
+            
             <EpisodeSectionWithImage id={animeId} animeInfo={animeDetails} animeSlug={animeSlug}/>
             {animeId === "null" && (
               <EpisodeSection>
@@ -107,6 +150,33 @@ const WatchAnimePage = () => {
     </div>
   )
 }
+
+const EpisodeDescription = styled.div`
+  font-family: 'Gilroy-Medium',sans-serif;
+  margin: 2rem 0 0 0;
+  .box1{
+    display: flex;
+    align-items: start;
+    img{
+      margin: 1rem 1rem 0 0;
+      width: 200px;
+    }
+    p{
+      margin: 0.7rem;
+    }
+  }
+  .episode-number{
+    font-weight: bold;
+  }
+  .episode-airdate{
+    color: grey;
+  }
+  .overview-heading{
+    font-weight: bold;
+    font-size:1.2rem;
+  }
+
+`
 
 const ExternalPlayerContainer = styled.div`
     display: flex;

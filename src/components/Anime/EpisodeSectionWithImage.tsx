@@ -14,11 +14,12 @@ import useWindowDimension from '../../hooks/useWindowDimension';
 import { database } from '../../Firebase/firebase';
 import { get, ref, set, update } from 'firebase/database';
 import { useStateContext } from '../../GlobalContext/ContextProvider';
+import { kitsuApiUrl } from '../../constants/url';
 
 const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInfo:any,animeSlug:any}) => {
     const [animeEpisodes, setAnimeEpisodes] = useState<any>([]);
     const [loading, setLoading] = useState(true);
-    const [color, setColor] = useState("");
+    const [color, setColor] = useState(animeInfo[0]?.anifyData?.color);
     const { width, height } = useWindowDimension();
     const [visible, setMoreVisible] = useState(12);
     const {currentUser,} = useStateContext();
@@ -30,11 +31,12 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
     const getAnimeData = async () => {
         console.log(animeInfo);
         try{
-            let result = await axios.get(`https://redux-api-wine.vercel.app/api/info/anilist?id=${id}`);
+            let kitsuId = animeInfo[0].anilistResponse.kitsuId;
+            let result = await axios.get(`${kitsuApiUrl}?filter[mediaType]=Anime&filter[media_id]=${kitsuId}&page[limit]=20&sort=number`);
+            console.log(result.data.data);
             if(result.status === 200){
-                setAnimeEpisodes(result.data.episodes);
+                setAnimeEpisodes(result.data.data);
                 setAnimeDetails(result.data);
-                setColor(result.data.color);
             }else{
                 console.log("API return status code",result.status);
             }
@@ -45,7 +47,6 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
         
        setLoading(false);
        
-          
     }
     const updateContinueWatching = (userId: any, newContinueWatching: any, animeString: any, StreamingLink: any) => {
         const db = database;
@@ -108,7 +109,7 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
 
                 </Heading>
                 {loading && (<HomeCardSkeleton />)}
-                {!loading && (width > 600) && (
+                {/* {!loading && (width > 600) && (
                     <Swiper /// this breakpointer works like 320>=\
                         modules={[Navigation, Mousewheel,Scrollbar]}
                         scrollbar={{draggable:true}}
@@ -152,12 +153,15 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
                         }
                     >
                         {animeEpisodes.map((episode: any, index: any) => (
-                            <SwiperSlide>
+                            <SwiperSlide key={index}>
                                 <Wrapper to={`/animes/watch&episodeId=${(animeInfo[0].gogoResponse.episodes[index] ?? animeInfo[0].anilistResponse.episodes[index])?.replace("/","")}&animeName=${animeSlug}&id=${id}`} 
                                 onClick={()=>updateContinueWatching(currentUser.uid,animeInfo[0].anilistResponse,id,
-                                    `/animes/watch&episodeId=${(animeInfo[0].gogoResponse.episodes[index] ?? animeInfo[0].anilistResponse.episodes[index])?.replace("/","")}&animeName=${animeSlug}&id=${id}`)}>
-                                    <img src={`${episode.image ?? animeInfo[0].anilistResponse.anilistPoster.large}`} alt="" />
-                                    <p style={{ color: color !== "" ? color : "white" }}>Ep {episode.number ?? animeInfo[0].gogoResponse.episodes[index].split("-").reverse()[0]}: {episode.title ?? "NA"}</p>
+                                    `/animes/watch&episodeId=${(animeInfo[0].gogoResponse.episodes[index] ?? animeInfo[0].anilistResponse.episodes[index])?.replace("/","")}&animeName=${animeSlug}&id=${id}`)}
+                                    >
+                                    <img src={`${episode.attributes.thumbnail.original ?? animeInfo[0].anilistResponse.anilistPoster.large}`} alt="" />
+                                    <p style={{ color: color !== "" ? color : "white" }}>
+                                        Ep {episode.attributes.number ?? animeInfo[0].gogoResponse.episodes[index].split("-").reverse()[0]}: {episode.attributes.titles.en_us ?? "NA"}
+                                    </p>
                                     <div>
                                         {animeInfo[0].gogoResponse.title.toLowerCase().includes("dub") ? "Dub" : "Sub"}
                                     </div>
@@ -167,9 +171,29 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
                         ))}
 
                     </Swiper>
+                )} */}
+
+                {!loading && (
+                    <GridContainer>
+                        {animeEpisodes.map((episode:any,index:any)=>(
+                        <Wrapper 
+                        key={index}
+                        to={`/animes/watch&episodeId=${(animeInfo[0].gogoResponse.episodes[index] ?? animeInfo[0].anilistResponse.episodes[index])?.replace("/","")}&animeName=${animeSlug}&id=${id}&animeKitsuId=${episode.id}`} 
+                        onClick={()=>updateContinueWatching(currentUser.uid,animeInfo[0].anilistResponse,id,
+                            `/animes/watch&episodeId=${(animeInfo[0].gogoResponse.episodes[index] ?? animeInfo[0].anilistResponse.episodes[index])?.replace("/","")}&animeName=${animeSlug}&id=${id}&animeKitsuId=${episode.id}`)}
+                        >
+                            <img src={`${episode?.attributes?.thumbnail?.original ?? animeInfo[0].anilistResponse.anilistPoster.large}`} alt="" />
+                            <p style={{ color: color !== "" ? color : "white" }}>
+                            <span> 
+                                    Episode {episode?.attributes?.number ?? animeInfo[0].gogoResponse.episodes[index].split("-").reverse()[0]} 
+                                </span> {episode?.attributes?.titles?.en_us ?? episode?.attributes?.titles?.en ?? episode?.attributes?.canonicalTitle ?? "NA"}
+                            </p>
+                        </Wrapper>
+                        ))}
+                    </GridContainer>
                 )}
 
-                {!loading && (width <= 600) && (
+                {!loading && false && (
                     <MainContent>
                         <Content>
                             <CardWrapper>
@@ -201,6 +225,15 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
     )
 }
 
+const GridContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    @media screen and (max-width:500px) {
+        flex-wrap: nowrap;
+        flex-direction: column;
+    }
+`
 
 const MainContent = styled.div`
     text-align:center;
@@ -276,30 +309,25 @@ const CardWrapper = styled.div`
 `
 const Wrapper = styled(Link)`
     text-decoration: none;
-    /* position: relative; */
-    width: 300px;
+    background-color: #222121;
+    width: 350px;
+    padding: 1rem 1rem 0.5rem 1rem;
     p{
-        max-width: 300px;
         font-family: "Gilroy-Medium",sans-serif;
         font-size : 1.1rem;
+        padding: 0;
+
     }
     img{
-        width: 300px;
-        height: 200px;
+        width: 100%;
+        height: 125px;
         object-fit: cover;
-        border-radius: 0.5rem;
+
     }
-    div{
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        color: #ffffffe1;
-        padding: 0.2rem 0.2rem;
-        background-color: #ff0000ae;
-        font-family: 'Gilroy-Bold',sans-serif;
-        border-radius: 4px;
+    span{
+        font-weight: bold;
     }
-    @media screen and (max-width:900px){
+    /* @media screen and (max-width:900px){
         width: 180px;
         img{
             width: 180px;
@@ -308,26 +336,31 @@ const Wrapper = styled(Link)`
         p{
             font-size : 1rem;
             margin: 1rem 0;
-            max-width: 180px;
+        }
+    } */
+    @media screen and (max-width:500px){
+        width: 95%;
+        img{
+            width: 100%;
+            height: 125px;
+            border-radius: 0.2rem;
         }
     }
-    @media screen and (max-width:400px){
+    /* @media screen and (max-width:400px){
         width: 160px;
-        p{
-            width: 160px;
-            
-        }
         img{
             width:150px;
             height: 100px ;
         }
-    }
+    } */
     
 `
 
 const Heading = styled.div`
+
     h1{
-        font-size : 2.3rem;
+        font-size : 2rem;
+        font-family: 'Gilroy-Bold',sans-serif;
     }
     margin-bottom: 2rem;
     @media screen and (max-width:400px){
@@ -338,8 +371,7 @@ const Heading = styled.div`
     }
 `
 const MainDiv = styled.div`
-    margin-left: 0rem;
-    margin-right: 2rem;
+    margin : 1rem 2rem 0 0;
     .swiper-pagination{
         margin-top: 3rem;
     }

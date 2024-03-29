@@ -342,7 +342,7 @@ const Episodes = styled.div`
 `
 
 const EpisodeSection = styled.div`
-  margin: 0 3rem 10rem 2rem;
+  margin: 0rem 3rem 10rem 2rem;
   h1{
       margin-bottom: 2rem;
     }
@@ -397,6 +397,7 @@ const Poster = styled.div`
 const ContentWrapper = styled.div`
   display: flex;
   padding: 0 3rem 0 3rem;
+  margin : 0 0 5rem 0;
   .info{
     margin: 1rem 2rem;
     font-family: "Gilroy-Regular",sans-serif;
