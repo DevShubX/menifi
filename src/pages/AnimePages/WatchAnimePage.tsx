@@ -26,6 +26,7 @@ const WatchAnimePage = () => {
   const [episodeDetails,setEpisodeDetails] = useState<any>();
   useEffect(() => {
     getAnimeSources();
+    getKitsuEpisodeDetails();
   }, [episodeSlug]);
 
   const getAnimeSources = async () => {
@@ -35,7 +36,6 @@ const WatchAnimePage = () => {
   }
   useEffect(() => {
     getAnimeDetails();
-    getKitsuEpisodeDetails();
   }, []);
   
   const getAnimeDetails = async () => {
@@ -45,7 +45,6 @@ const WatchAnimePage = () => {
 
   const getKitsuEpisodeDetails = async ()=>{
     let result = await axios.get(`${kitsuApiUrl}/${animeKitsuId}`);
-    console.log(result.data.data);
     setEpisodeDetails(result.data.data);
     
   }
@@ -87,7 +86,15 @@ const WatchAnimePage = () => {
                 </div>
                 <div>
                   <div>
-                      <ArtPlayerAnime sourcesLinks={animeSources[0].sources} />
+                    {animeSources[0]?.sources.sources && (
+                      <ArtPlayerAnime sourcesLinks={animeSources[0]?.sources} />
+                    )}
+
+                    {!animeSources[0]?.sources.sources && (
+                      <IFrameWrapper>
+                        <iframe src={animeSources[0].vidstreaming} allowFullScreen></iframe>
+                      </IFrameWrapper>
+                    )}
                       {/* <AnimeVideoPlayer sourceLinks={animeSources[0].sources} internalPlayer={internalPlayer} setInternalPlayer={setInternalPlayer}/> */}
                   </div>
                 </div>

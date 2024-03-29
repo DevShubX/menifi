@@ -82,7 +82,6 @@ const TvShowDetailsPage = () => {
       
       else {
         arr.push({...newContinueWatching,TvDetailsPage : tvstring});
-        console.log("No data available");
         set(dbref,{
           tvshows_arr : arr,
         })
@@ -105,7 +104,6 @@ const TvShowDetailsPage = () => {
         })
       } else {
         arr2.push({ ...newContinueWatching, movieStreamingLink: tvstring });
-        console.log("No data available");
         set(newdbref, {
           recently_watched_arr: arr2,
         })

@@ -57,7 +57,6 @@ const AccountPage = () => {
           toast.error(error.name);
         }, () => {
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-            console.log('File available at', downloadURL);
             await updateProfile(currentUser, {
               photoURL: downloadURL
             });
@@ -72,7 +71,6 @@ const AccountPage = () => {
           toast.success('Profile Changed');
         })
     } catch (error) {
-      console.log(error)
     }
   }
   return (

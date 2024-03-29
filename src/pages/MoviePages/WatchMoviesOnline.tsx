@@ -30,7 +30,6 @@ const WatchMoviesOnline = () => {
     window.scroll(0, 0);
     const links = await axios.get(`https://menifi-api.vercel.app/api/links/sources/?episodeId=${episodeId}&mediaId=${mediaId}`);
     let menifi_data = await axios.get(`https://menifi-api.vercel.app/api/info/flixhq/movie/${mediaId_menifi}`);
-    console.log(links);
     setMovieDetails(menifi_data.data);
     setMovieReferer(links.data.headers.Referer);
     setMovieSources(links.data.sources);

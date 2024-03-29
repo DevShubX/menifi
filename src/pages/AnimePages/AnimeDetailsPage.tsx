@@ -70,7 +70,6 @@ const AnimeDetailsPage = () => {
         });
       }else {
         arr.push({ ...newContinueWatching, animePageLink: animeString });
-        console.log("No data available");
         set(dbref, {
           fav_arr: arr,
         })
@@ -97,7 +96,6 @@ const AnimeDetailsPage = () => {
         });
       }else {
         arr.push({ ...newContinueWatching, animePageLink: animeString });
-        console.log("No data available");
         set(dbref, {
           wishlist_arr: arr,
         })

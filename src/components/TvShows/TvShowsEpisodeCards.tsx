@@ -46,7 +46,6 @@ const TvShowsEpisodeCards = ({ tvSeasonID, mediaId, tvDetails }: { tvSeasonID: a
 
             else {
                 arr.push({ ...newContinueWatching, TvDetailsPage: tvstring, TvStreamingLink: StreamingLink });
-                console.log("No data available");
                 update(dbref, {
                     tvshows_arr: arr,
                 })
@@ -69,7 +68,6 @@ const TvShowsEpisodeCards = ({ tvSeasonID, mediaId, tvDetails }: { tvSeasonID: a
                 })
             } else {
                 arr2.push({ ...newContinueWatching, TvDetailsPage: tvstring, TvStreamingLink: StreamingLink });
-                console.log("No data available");
                 set(newdbref, {
                     recently_watched_arr: arr2,
                 })

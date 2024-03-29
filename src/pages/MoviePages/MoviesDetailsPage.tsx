@@ -67,7 +67,6 @@ const MoviesDetailsPage = () => {
         })
       } else {
         arr.push({ ...newContinueWatching, movieStreamingLink: movieString });
-        console.log("No data available");
         set(dbref, {
           movies_arr: arr,
         })
@@ -90,7 +89,6 @@ const MoviesDetailsPage = () => {
         })
       } else {
         arr2.push({ ...newContinueWatching, movieStreamingLink: movieString });
-        console.log("No data available");
         set(newdbref, {
           recently_watched_arr: arr2,
         })
@@ -116,7 +114,6 @@ const MoviesDetailsPage = () => {
         });
       }else {
         arr.push({ ...newContinueWatching, movieStreamingLink: movieString });
-        console.log("No data available");
         set(dbref, {
           fav_arr: arr,
         })

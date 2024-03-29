@@ -29,11 +29,9 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
     }, [id]);
 
     const getAnimeData = async () => {
-        console.log(animeInfo);
         try{
             let kitsuId = animeInfo[0].anilistResponse.kitsuId;
             let result = await axios.get(`${kitsuApiUrl}?filter[mediaType]=Anime&filter[media_id]=${kitsuId}&page[limit]=20&sort=number`);
-            console.log(result.data.data);
             if(result.status === 200){
                 setAnimeEpisodes(result.data.data);
                 setAnimeDetails(result.data);
@@ -41,7 +39,6 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
                 console.log("API return status code",result.status);
             }
         }catch(err){
-            console.log(err);
             setAnimeEpisodes(animeInfo[0].gogoResponse.episodes);
         }
         
@@ -67,7 +64,6 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
 
             else {
                 arr.push({ ...newContinueWatching, movieId: animeString, StreamingLink: StreamingLink });
-                console.log("No data available");
                 set(dbref, {
                     animes_arr: arr,
                 })
@@ -90,7 +86,6 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
                 })
             } else {
                 arr2.push({ ...newContinueWatching, movieId: animeString, StreamingLink: StreamingLink });
-                console.log("No data available");
                 set(newdbref, {
                     recently_watched_arr: arr2,
                 })
