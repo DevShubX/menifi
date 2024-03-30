@@ -10,9 +10,9 @@ import NavBar from '../../components/NavBars/NavBar'
 import DetailsPageSkeleton from '../../components/Skeletons/DetailsPageSkeleton'
 import AnimeVideoPlayer from '../../components/VideoPlayers/AnimeVideoPlayer'
 import ArtPlayerAnime from '../../components/VideoPlayers/ArtPlayerAnime'
-import { useStateContext } from '../../GlobalContext/ContextProvider'
 import useWindowDimension from '../../hooks/useWindowDimension'
 import { kitsuApiUrl } from '../../constants/url'
+import {FaChevronLeft} from 'react-icons/fa'
 const WatchAnimePage = () => {
   let episodeSlug = useParams().episodeSlug;
   let animeId = useParams().animeId;
@@ -66,6 +66,10 @@ const WatchAnimePage = () => {
             {animeSources.length > 0 && (
               <div>
                 <div>
+                  <ReturnLink to={`/animes/category/${animeSlug}`}>
+                    <FaChevronLeft/>
+                    Back to details page
+                  </ReturnLink>
                   <Heading>
                     <p>
                       <span>
@@ -104,7 +108,7 @@ const WatchAnimePage = () => {
               <EpisodeDescription>
                 <div className='box1'>
                   <div>
-                    <img src={episodeDetails?.attributes?.thumbnail?.original} alt="episode image" />
+                    <img src={episodeDetails?.attributes?.thumbnail?.original ?? animeDetails[0]?.anilistResponse?.anilistBannerImage} alt="episode image" />
                   </div>
                   <div>
                     <p className='episode-number'>Episode {episodeDetails?.attributes?.number}</p>
@@ -158,6 +162,18 @@ const WatchAnimePage = () => {
   )
 }
 
+const ReturnLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: #ff0000b7;
+  :hover{
+    color: red;
+  }
+`
+
+
 const EpisodeDescription = styled.div`
   font-family: 'Gilroy-Medium',sans-serif;
   margin: 2rem 0 0 0;
@@ -167,6 +183,8 @@ const EpisodeDescription = styled.div`
     img{
       margin: 1rem 1rem 0 0;
       width: 200px;
+      height: 100px;
+      object-fit: cover;
     }
     p{
       margin: 0.7rem;

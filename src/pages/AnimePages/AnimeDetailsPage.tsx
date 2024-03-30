@@ -30,6 +30,7 @@ const AnimeDetailsPage = () => {
   }, []);
   const getAnimeDetails = async () => {
     let result = await axios.get(`https://redux-api-wine.vercel.app/api/getanime?link=/category/${animeSlug}`);
+    // let result = await axios.get(`http://localhost:8080/api/getanime?link=/category/${animeSlug}`);
     setAnimeDetails(result.data);
     result.data[0].anilistResponse !== "NONE" ?
       setColor(result?.data[0]?.anilistResponse?.anilistPoster?.color) :
@@ -151,9 +152,8 @@ const AnimeDetailsPage = () => {
                   {width <= 600 && expanded && (
                     <p>
                       <span>Plot Summary: </span>
-                      {
-                        animeDetails[0].gogoResponse.description.replace("Plot Summary:", "")
-                      }
+                      <div dangerouslySetInnerHTML={{__html: animeDetails[0]?.anilistResponse?.description}}>
+                      </div>
                       <button onClick={() => setExpanded(!expanded)}>
                         read less
                       </button>
@@ -162,19 +162,20 @@ const AnimeDetailsPage = () => {
                   {width <= 600 && !expanded && (
                     <p>
                       <span>Plot Summary: </span>
-                      {animeDetails[0].gogoResponse.description.replace("Plot Summary:", "").
-                        substring(0, 200) + "..."}
+                      <div dangerouslySetInnerHTML={{__html: animeDetails[0]?.anilistResponse?.description.
+                        substring(0, 200) + "..."}}>
+                      </div>
                       <button onClick={() => { setExpanded(!expanded) }}>
                         read more
                       </button>
                     </p>
                   )}
                   {width > 600 && (
-                    <p>
+                    <div>
                       <span>Plot Summary: </span>
-                      {animeDetails[0].gogoResponse.description.
-                        replace("Plot Summary:", "")}
-                    </p>
+                      <div dangerouslySetInnerHTML={{__html: animeDetails[0]?.anilistResponse?.description}}>
+                      </div>
+                    </div>
                   )}
                   <p>
                     <span>Genre: </span>

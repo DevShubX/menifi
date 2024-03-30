@@ -19,7 +19,7 @@ import { kitsuApiUrl } from '../../constants/url';
 const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInfo:any,animeSlug:any}) => {
     const [animeEpisodes, setAnimeEpisodes] = useState<any>([]);
     const [loading, setLoading] = useState(true);
-    const [color, setColor] = useState(animeInfo[0]?.anifyData?.color);
+    const [color, setColor] = useState(animeInfo[0]?.anilistResponse?.color);
     const { width, height } = useWindowDimension();
     const [visible, setMoreVisible] = useState(12);
     const {currentUser,} = useStateContext();
@@ -173,7 +173,7 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
                         {animeEpisodes.map((episode:any,index:any)=>(
                         <Wrapper 
                         key={index}
-                        to={`/animes/watch&episodeId=${(animeInfo[0].gogoResponse.episodes[index] ?? animeInfo[0].anilistResponse.episodes[index])?.replace("/","")}&animeName=${animeSlug}&id=${id}&animeKitsuId=${episode.id}`} 
+                        to={`/animes/watch&episodeId=${(animeInfo[0]?.gogoResponse?.episodes[index] ?? animeInfo[0]?.anilistResponse?.episodes[index])?.replace("/","")}&animeName=${animeSlug}&id=${id}&animeKitsuId=${episode.id ?? null}`} 
                         onClick={()=>updateContinueWatching(currentUser.uid,animeInfo[0].anilistResponse,id,
                             `/animes/watch&episodeId=${(animeInfo[0].gogoResponse.episodes[index] ?? animeInfo[0].anilistResponse.episodes[index])?.replace("/","")}&animeName=${animeSlug}&id=${id}&animeKitsuId=${episode.id}`)}
                         >
