@@ -13,6 +13,7 @@ import ArtPlayerAnime from '../../components/VideoPlayers/ArtPlayerAnime'
 import useWindowDimension from '../../hooks/useWindowDimension'
 import { kitsuApiUrl } from '../../constants/url'
 import {FaChevronLeft} from 'react-icons/fa'
+import { formatDate } from '../../constants/methods'
 const WatchAnimePage = () => {
   let episodeSlug = useParams().episodeSlug;
   let animeId = useParams().animeId;
@@ -49,11 +50,7 @@ const WatchAnimePage = () => {
     
   }
 
-  const formatDate = (dateString:string) => {
-    const options:Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' };
-    const date = new Date(dateString);
-    return date.toLocaleString('en-US', options);
-  };
+  
 
 
   return (
@@ -108,7 +105,7 @@ const WatchAnimePage = () => {
               <EpisodeDescription>
                 <div className='box1'>
                   <div>
-                    <img src={episodeDetails?.attributes?.thumbnail?.original ?? animeDetails[0]?.anilistResponse?.anilistBannerImage} alt="episode image" />
+                    <img src={episodeDetails?.attributes?.thumbnail?.original ?? animeDetails?.anilistResponse?.anilistBannerImage} alt="episode image" />
                   </div>
                   <div>
                     <p className='episode-number'>Episode {episodeDetails?.attributes?.number}</p>
@@ -163,6 +160,7 @@ const WatchAnimePage = () => {
 }
 
 const ReturnLink = styled(Link)`
+  font-family:'Gilroy-Medium',sans-serif;
   display: flex;
   align-items: center;
   gap: 0.5rem;

@@ -16,6 +16,7 @@ const AllSongsPage = () => {
   const {width} = useWindowDimension();
   const {setActiveSong,setIsActive,setIsPlaying,setCurrentIndex,activeSong,setCurrentSongs} = useStateContext()
   const observer: any = useRef();
+  
   const pagenumberChange = (node: any) => {
     if (isLoading) return;
     if (observer.current) observer.current.disconnect();
