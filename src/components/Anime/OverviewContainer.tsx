@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import AnimeRelations from './AnimeRelations';
 import AnilistCharacters from './AnilistCharacters';
 import AnilistStaff from './AnilistStaff';
+import AnimeRecommendations from './AnimeRecommendations';
 
 interface OverViewContainerProps{
     animeDetails:any;
@@ -40,7 +41,9 @@ const OverviewContainer = ({animeDetails}:OverViewContainerProps) => {
         </Heading>
         <iframe title={animeDetails?.trailer?.id} src={`https://www.youtube.com/embed/${animeDetails?.trailer?.id}?enablejsapi=1&wmode=opaque&autoplay=0`}></iframe>
       </Trailer>
-
+      <div>
+        <AnimeRecommendations recommendations={animeDetails?.recommendations} />
+      </div>
     </MainDiv>
   )
 }
@@ -54,6 +57,12 @@ const Trailer = styled.div`
   @media screen and (max-width:900px) {
     iframe{
       width: 350px;
+      height: 150px;
+    }
+  }
+  @media screen and (max-width:900px) {
+    iframe{
+      width: 300px;
       height: 150px;
     }
   }
