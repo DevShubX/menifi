@@ -166,7 +166,7 @@ const EpisodeSectionWithImage = ({ id ,animeInfo,animeSlug}: { id: any ,animeInf
                                             <img src={`${episode?.attributes?.thumbnail?.original ?? animeInfo?.anilistResponse?.anilistPoster?.large}`} alt="" />
                                             <p style={{ color: color !== "" ? color : "white" }}>
                                             <span> 
-                                                    Episode {episode?.attributes?.number ?? animeInfo?.gogoResponse?.episodes[index].split("-").reverse()[0]}  
+                                                    Episode {episode?.attributes?.number ?? animeInfo?.gogoResponse?.episodes[index]?.split("-")?.reverse()[0]}  
                                                 </span> {episode?.attributes?.titles?.en_us ?? episode?.attributes?.titles?.en ?? episode?.attributes?.canonicalTitle ?? "NA"}
                                             </p>
                                         </Wrapper>

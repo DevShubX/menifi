@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { IconContext } from 'react-icons'
 import { BiArrowToBottom, BiFullscreen } from 'react-icons/bi'
 import { HiOutlineSwitchHorizontal } from 'react-icons/hi'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
 import EpisodeSectionWithImage from '../../components/Anime/EpisodeSectionWithImage'
 import NavBar from '../../components/NavBars/NavBar'
@@ -19,6 +19,15 @@ const WatchAnimePage = () => {
   let animeId = useParams().animeId;
   let animeSlug = useParams().animeSlug;
   let animeKitsuId = useParams().animeKitsuId;
+
+  // const [searchParams,setSearchParams] = useSearchParams();
+
+  // let episodeSlug = searchParams.get('episodeId');
+  // let animeId = searchParams.get('id');
+  // let animeSlug = searchParams.get('animeName');
+  // let animeKitsuId = searchParams.get('animeKitsuId');
+
+
   const [animeSources, setAnimeSources] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const { width, height } = useWindowDimension();
@@ -35,6 +44,7 @@ const WatchAnimePage = () => {
     setAnimeSources(result.data);
     setLoading(false);
   }
+
   useEffect(() => {
     getAnimeDetails();
   }, []);
@@ -49,8 +59,6 @@ const WatchAnimePage = () => {
     setEpisodeDetails(result.data.data);
     
   }
-
-  
 
 
   return (

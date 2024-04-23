@@ -28,7 +28,7 @@ const ArtPlayerAnime = ({sourcesLinks}:{sourcesLinks:any}) => {
             mutex: true,
             backdrop: true,
             autoPlayback: true,
-            whitelist: ['*'],
+            whitelist: ['*'],   
             screenshot:true,
             lock:true,
             moreVideoAttr: {

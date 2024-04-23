@@ -20,11 +20,13 @@ const AnimeDetailsPage = () => {
   const [animeDetails, setAnimeDetails] = useState<any>();
   const [loading, setLoading] = useState(true);
   const {currentUser} = useStateContext();
+
   useEffect(() => {
     if(!animeDetails){
       getAnimeDetails();
     }
-  }, []);
+  },[]);
+
   const getAnimeDetails = async () => {
     setLoading(true);
     let result = await axios.get(`https://redux-api-wine.vercel.app/api/getanime?link=/category/${animeSlug}`);

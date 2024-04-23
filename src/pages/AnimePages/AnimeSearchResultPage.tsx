@@ -20,7 +20,6 @@ const AnimeSearchResultPage = () => {
     let result = await axios.get(`https://redux-api-wine.vercel.app/api/search?name=${animeName}`);
     setSearchResult(result.data);
     setLoading(false);
-
   }
 
   return (
