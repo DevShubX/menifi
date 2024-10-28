@@ -22,6 +22,7 @@ const WatchTvShowPage = () => {
   const [tvid, settvid] = useState(mediaId?.split("-")[mediaId.split("-").length - 1]);
   const [tvshowsDetails,setTvshowsDetails] = useState<any>({});
   const [tvshowHref,setTvShowHref] = useState<any>("");
+  
   useEffect(() => {
     getSourcesTvshow();
   }, [episodeId]);
@@ -33,6 +34,8 @@ const WatchTvShowPage = () => {
   useEffect(()=>{
     getTvshowsDetails();
   },[menifi_id]);
+
+
   const getSourcesTvshow = async () => {
     let sources = await axios.get(`https://menifi-api.vercel.app/api/links/sources/?episodeId=${episodeId}&mediaId=${mediaId}`);
     setTvShowHref(sources.data.headers.Referer);

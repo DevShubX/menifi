@@ -4,24 +4,15 @@ import {getAuth} from "firebase/auth"
 import {getStorage} from 'firebase/storage';
 import {getFirestore} from 'firebase/firestore'
 import {getDatabase} from 'firebase/database'
-// const firebaseConfig = {
-//   apiKey: "AIzaSyDCRyoYGxph9c7ue-De_z7194QNkCfBsQs",
-//   authDomain: "menifi-dev.firebaseapp.com",
-//   projectId: "menifi-dev",
-//   storageBucket: "menifi-dev.appspot.com",
-//   messagingSenderId: "433062195554",
-//   appId: "1:433062195554:web:590504633f6a537210fc3b",
-//   databaseURL : "https://menifi-dev-default-rtdb.firebaseio.com",
-// };
-const firebaseConfig = {
-  apiKey: "AIzaSyC9uQWX0nkuqeJjUffcTcwWK-50EgGSGVk",
-  authDomain: "menifi-prod.firebaseapp.com",
-  databaseURL: "https://menifi-prod-default-rtdb.firebaseio.com",
-  projectId: "menifi-prod",
-  storageBucket: "menifi-prod.appspot.com",
-  messagingSenderId: "95747403257",
-  appId: "1:95747403257:web:a5efbc09c3c4d476176128"
 
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_DATABASE_URL,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID
 };
 
 // Initialize Firebase

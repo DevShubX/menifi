@@ -17,7 +17,6 @@ interface type{
     setActiveSong: Dispatch<SetStateAction<object>>,
     isActive : boolean,
     setIsActive:Dispatch<SetStateAction<boolean>>,
-
 }
 
 export const StateContext = createContext<type>({} as any);
@@ -63,4 +62,4 @@ export const ContextProvider = ({children}:{children:ReactNode}) => {
 }
 
 
-export const useStateContext = () =>useContext(StateContext);
+export const useStateContext = () => useContext(StateContext);

@@ -45,7 +45,7 @@ const AnimeDetailsPage = () => {
     else if (r === 50) {
       return "#eeff00";
     }
-    else if (r >= 30 && r < 50) {
+    else if (r >= 30 && r < 50) {  
       return "#f59b42";
     }
     else if (r >= 0 && r < 30) {

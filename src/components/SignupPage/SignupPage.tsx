@@ -4,7 +4,7 @@ import "swiper/css";
 import "swiper/css/effect-cards";
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile} from 'firebase/auth';
 import { auth, db, storage } from '../../Firebase/firebase';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { doc, setDoc } from 'firebase/firestore';
@@ -14,6 +14,7 @@ const SignupPage = () => {
     const navigate = useNavigate();
     const [selectedPhoto, setSelectedPhoto] = useState<any>("");
     const [photoUrl, setPhotoUrl] = useState<any>(null);
+    
     useEffect(() => {
         if (selectedPhoto) {
             setPhotoUrl(URL.createObjectURL(selectedPhoto));
